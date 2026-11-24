@@ -2,2069 +2,300 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EduPose – Vui Học Cùng Cử Chỉ | Thầy Trần Hồng Quân</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            display: ['Comfortaa', 'cursive'],
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-          },
-          colors: {
-            pinkPastel: {
-              50: '#fff5f8',
-              100: '#ffe4ec',
-              200: '#ffc9da',
-              300: '#ff9ebb',
-              400: '#f472b6',
-              500: '#ec4899',
-              600: '#db2777',
-            }
-          }
-        }
-      }
-    };
-  </script>
-  <style>
-    :root {
-      --bg-grad: linear-gradient(135deg, #ffe4ec 0%, #fff0f5 55%, #ffeaf2 100%);
-      --card-shadow: 0 10px 28px -6px rgba(244, 114, 182, 0.18), 0 4px 12px -2px rgba(236, 72, 153, 0.08);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg-grad);
-      color: #4a2035;
-      min-height: 100vh;
-      overflow-x: hidden;
-      margin: 0;
-    }
-
-    .font-display {
-      font-family: 'Comfortaa', cursive;
-    }
-
-    /* Phong cách thẻ chỉ may nét đứt thủ công dễ thương */
-    .stitch-card {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
-      border: 2px dashed #f9a8d4;
-      border-radius: 1.5rem;
-      box-shadow: var(--card-shadow);
-    }
-
-    .stitch-card-strong {
-      background: rgba(255, 255, 255, 0.96);
-      border: 2.5px dashed #ec4899;
-      border-radius: 1.5rem;
-      box-shadow: 0 14px 32px -6px rgba(236, 72, 153, 0.25);
-    }
-
-    .stitch-btn {
-      border: 2px dashed rgba(255, 255, 255, 0.75);
-      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
-    }
-    .stitch-btn:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.03);
-    }
-    .stitch-btn:active {
-      transform: translateY(1px) scale(0.98);
-    }
-
-    /* Hoạt ảnh Chibi nhún nhảy / nhịp thở */
-    @keyframes chibiFloat {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-8px) scale(1.02); }
-    }
-    @keyframes chibiHeroPulse {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-10px) scale(1.045); }
-    }
-    @keyframes noteWiggle {
-      0%, 100% { transform: rotate(-6deg); }
-      50% { transform: rotate(8deg); }
-    }
-    @keyframes timerPulse {
-      0%, 100% { opacity: 1; transform: scaleY(1); }
-      50% { opacity: 0.72; transform: scaleY(1.08); }
-    }
-    @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.86) translateY(12px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .animate-chibi { animation: chibiFloat 3.1s ease-in-out infinite; }
-    .animate-chibi-delay-1 { animation: chibiFloat 3.1s ease-in-out 0.35s infinite; }
-    .animate-chibi-delay-2 { animation: chibiFloat 3.1s ease-in-out 0.7s infinite; }
-    .animate-chibi-hero { animation: chibiHeroPulse 2.8s ease-in-out infinite; }
-    .animate-note { animation: noteWiggle 1.2s ease-in-out infinite; display: inline-block; }
-    .animate-timer-danger { animation: timerPulse 0.48s ease-in-out infinite; }
-    .animate-pop { animation: popIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-
-    /* Khối ánh sáng pastel nền */
-    .pastel-blob {
-      position: fixed;
-      border-radius: 9999px;
-      filter: blur(72px);
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.55;
-    }
-
-    .mirror-mode {
-      transform: scaleX(-1);
-    }
-
-    /* Thanh cuộn mềm mại */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #fff0f5; }
-    ::-webkit-scrollbar-thumb { background: #f9a8d4; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #f472b6; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Hành Trình Vệ Thần Tri Thức</title>
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
-<body class="relative antialiased selection:bg-pink-200 selection:text-pink-900">
-  <!-- Nền ảnh tùy chỉnh (nếu giáo viên tải lên) -->
-  <div id="customBgLayer" class="fixed inset-0 bg-cover bg-center pointer-events-none opacity-25 hidden z-0"></div>
+<body>
+  <div id="app-viewport">
+    <div id="game-stage" class="stage-16-9">
+      <!-- Canvas 2D hiển thị thế giới 3D Pixar & nhân vật Skeletal Rigging -->
+      <canvas id="game-canvas" width="1280" height="720"></canvas>
 
-  <!-- Khối ánh sáng pastel -->
-  <div class="pastel-blob w-80 h-80 bg-pink-300 -top-20 -left-20"></div>
-  <div class="pastel-blob w-96 h-96 bg-rose-200 top-1/3 -right-24"></div>
-  <div class="pastel-blob w-72 h-72 bg-fuchsia-200 -bottom-16 left-1/4"></div>
-
-  <!-- Vùng chứa chính -->
-  <div id="appRoot" class="relative z-10 min-h-screen flex flex-col">
-
-    <!-- ==================== 1. MÀN HÌNH TRANG CHỦ ==================== -->
-    <div id="homeScreen" class="flex-1 flex flex-col max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 gap-5">
-      <!-- Header Trang chủ -->
-      <header class="stitch-card px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white shadow-md border-2 border-dashed border-white/80">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-            </svg>
+      <!-- HUD khi đang chơi -->
+      <header id="hud-bar" class="hud-bar hidden" aria-label="Thông tin trận đấu">
+        <div class="hud-group" id="hud-solo-stats">
+          <div class="hud-pill hud-lives" id="hud-lives" title="Mạng sống">
+            <img src="./assets/images/heart_gem.png" alt="Tim" class="hud-icon" />
+            <span id="lives-count">3</span>
           </div>
-          <div>
-            <h1 class="font-display text-lg sm:text-xl font-bold text-pink-700 leading-tight">
-              EduPose – Vui Học Cùng Cử Chỉ
-            </h1>
-            <p class="text-xs sm:text-sm font-semibold text-pink-500">
-              Tác giả: Thầy Trần Hồng Quân <span class="hidden sm:inline text-pink-400 font-normal">• Biên soạn &amp; Thiết kế: Thầy Trần Hồng Quân</span>
-            </p>
+          <div class="hud-pill hud-shield hidden" id="hud-shield" title="Khiên ánh sáng">
+            <img src="./assets/images/shield_orb.png" alt="Khiên" class="hud-icon" />
+            <span>Khiên</span>
+          </div>
+          <div class="hud-pill hud-score">
+            <img src="./assets/images/star_knowledge.png" alt="Điểm" class="hud-icon" />
+            <span id="score-value">0</span>
+          </div>
+          <div class="hud-pill hud-combo" id="hud-combo">
+            <span>Combo x<strong id="combo-value">0</strong></span>
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="openHowToModal()" class="px-3 py-2 rounded-2xl bg-pink-50 hover:bg-pink-100 text-pink-700 font-semibold text-xs sm:text-sm border-2 border-dashed border-pink-300 flex items-center gap-1.5 transition">
-            <span>📖</span><span>Cách Chơi</span>
+        <div class="multiplayer-bar hidden" id="multiplayer-bar" aria-label="Bảng điểm nhiều người chơi"></div>
+
+        <div class="hud-center">
+          <div class="level-badge" id="level-badge">Cấp 1: Rừng Sáng Sớm</div>
+          <div class="progress-wrap" title="Tiến độ câu hỏi">
+            <div class="progress-fill" id="progress-fill"></div>
+            <span class="progress-text" id="progress-text">0 / 10</span>
+          </div>
+        </div>
+
+        <div class="hud-group">
+          <div class="hud-pill hud-timer" id="hud-timer">
+            <span id="timer-value">20</span>s
+          </div>
+          <button id="btn-jump-action" class="btn-hud btn-action" type="button" title="Nhảy thu thập sao (Space)">
+            Nhảy
           </button>
-          <button onclick="toggleBgm()" id="homeBgmBtn" class="px-3 py-2 rounded-2xl bg-pink-50 hover:bg-pink-100 text-pink-700 font-semibold text-xs sm:text-sm border-2 border-dashed border-pink-300 flex items-center gap-1.5 transition" title="Bật/Tắt nhạc nền">
-            <span class="bgm-note">🎵</span><span class="hidden md:inline">Nhạc nền</span>
+          <button id="btn-mute-hud" class="btn-hud" type="button" aria-label="Bật hoặc tắt âm thanh">
+            Âm thanh: Bật
           </button>
-          <button onclick="toggleSfx()" id="homeSfxBtn" class="px-3 py-2 rounded-2xl bg-pink-50 hover:bg-pink-100 text-pink-700 font-semibold text-xs sm:text-sm border-2 border-dashed border-pink-300 flex items-center gap-1.5 transition" title="Bật/Tắt âm thanh hiệu ứng">
-            <span class="sfx-icon">🔊</span><span class="hidden md:inline">Âm thanh</span>
-          </button>
-          <button onclick="toggleFullscreen()" class="px-3 py-2 rounded-2xl bg-pink-50 hover:bg-pink-100 text-pink-700 font-semibold text-xs sm:text-sm border-2 border-dashed border-pink-300 flex items-center gap-1.5 transition" title="Toàn màn hình">
-            <span>⛶</span><span class="hidden md:inline">Toàn màn hình</span>
-          </button>
-          <button onclick="openSettingsScreen()" class="px-3.5 py-2 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-xs sm:text-sm stitch-btn shadow-md flex items-center gap-1.5">
-            <span>⚙️</span><span>Cài Đặt</span>
-          </button>
+          <button id="btn-pause" class="btn-hud" type="button">Tạm dừng</button>
         </div>
       </header>
 
-      <!-- Hero Banner có 5 Chibi sống động -->
-      <section class="stitch-card px-4 sm:px-8 py-6 sm:py-8 text-center relative overflow-hidden">
-        <div class="flex items-end justify-center gap-2 sm:gap-5 md:gap-7 mb-5 pt-2">
-          <div class="flex flex-col items-center animate-chibi">
-            <img src="./assets/left_hand_up.png" alt="Cử chỉ A" class="w-16 h-16 sm:w-24 sm:h-24 object-contain drop-shadow-md" />
-            <span class="mt-1 px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-bold bg-blue-100 text-blue-700 border border-dashed border-blue-300">A • Tay trái</span>
+      <!-- Bảng câu hỏi đặt gọn ở phần dưới, hoàn toàn không che nhân vật & quái vật -->
+      <section id="quiz-panel" class="quiz-panel hidden" aria-label="Câu hỏi thử thách">
+        <div class="quiz-header">
+          <div class="quiz-header-left">
+            <span class="quiz-category" id="quiz-category">Khoa học tự nhiên</span>
+            <span class="quiz-turn-tag hidden" id="quiz-turn-tag">Lượt: Người 1</span>
           </div>
-          <div class="flex flex-col items-center animate-chibi-delay-1">
-            <img src="./assets/right_hand_up.png" alt="Cử chỉ B" class="w-16 h-16 sm:w-24 sm:h-24 object-contain drop-shadow-md" />
-            <span class="mt-1 px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-bold bg-emerald-100 text-emerald-700 border border-dashed border-emerald-300">B • Tay phải</span>
-          </div>
-          <div class="flex flex-col items-center animate-chibi-hero -mx-1 sm:mx-1">
-            <img src="./assets/celebration.png" alt="EduPose Tuyệt vời" class="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 object-contain drop-shadow-xl" />
-            <span class="mt-1 px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-extrabold bg-pink-500 text-white shadow-sm">Tuyệt vời!</span>
-          </div>
-          <div class="flex flex-col items-center animate-chibi-delay-2">
-            <img src="./assets/arms_spread.png" alt="Cử chỉ C" class="w-16 h-16 sm:w-24 sm:h-24 object-contain drop-shadow-md" />
-            <span class="mt-1 px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-bold bg-violet-100 text-violet-700 border border-dashed border-violet-300">C • Dang tay</span>
-          </div>
-          <div class="flex flex-col items-center animate-chibi">
-            <img src="./assets/both_hands_up.png" alt="Cử chỉ D" class="w-16 h-16 sm:w-24 sm:h-24 object-contain drop-shadow-md" />
-            <span class="mt-1 px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-bold bg-rose-100 text-rose-700 border border-dashed border-rose-300">D • Hai tay</span>
+          <span class="quiz-enemy-tag" id="quiz-enemy-tag">Đối đầu: Nấm Mù Mờ</span>
+        </div>
+        <h2 class="quiz-question" id="quiz-question-text">Đang tải câu hỏi...</h2>
+        <div class="quiz-options" id="quiz-options">
+          <button class="option-btn" data-index="0" type="button"><span class="opt-key">A</span><span class="opt-text"></span></button>
+          <button class="option-btn" data-index="1" type="button"><span class="opt-key">B</span><span class="opt-text"></span></button>
+          <button class="option-btn" data-index="2" type="button"><span class="opt-key">C</span><span class="opt-text"></span></button>
+          <button class="option-btn" data-index="3" type="button"><span class="opt-key">D</span><span class="opt-text"></span></button>
+        </div>
+        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+      </section>
+
+      <!-- MÀN HÌNH TRANG CHỦ PIXAR 3D CUTE -->
+      <section id="screen-menu" class="overlay-screen menu-hero-screen">
+        <div class="menu-hero-top">
+          <div class="menu-stats-pill">
+            <span><img src="./assets/images/trophy_cup.png" alt="" class="pill-mini-icon" /> Điểm cao: <strong id="menu-highscore">0</strong></span>
+            <span><img src="./assets/images/star_knowledge.png" alt="" class="pill-mini-icon" /> Kho câu hỏi: <strong id="menu-qcount">30</strong> câu</span>
+            <span>Chế độ: <strong id="menu-mode-label">1 người</strong></span>
           </div>
         </div>
 
-        <h2 class="font-display text-2xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-rose-500 to-fuchsia-600 tracking-wide mb-2">
-          VUI HỌC CÙNG CỬ CHỈ
-        </h2>
-        <p class="text-sm sm:text-base font-semibold text-pink-600 mb-5">
-          Tác giả: <span class="font-bold">Thầy Trần Hồng Quân</span> • Tương tác lớp học bằng AI nhận diện cử chỉ cơ thể
-        </p>
-
-        <div class="flex flex-col items-center gap-3">
-          <button id="homePlayBtn" onclick="startGame()" class="px-8 sm:px-10 py-4 rounded-3xl bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 text-white font-display text-base sm:text-xl font-bold stitch-btn shadow-xl flex items-center gap-3">
-            <span>🚀</span>
-            <span id="homePlayBtnText">CHƠI NGAY: Toán học vui nhộn</span>
-          </button>
-          <div id="homeQuickStats" class="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-semibold text-pink-700">
-            <span class="px-3 py-1 rounded-full bg-pink-50 border border-dashed border-pink-300">⏱️ Giữ cử chỉ: <strong id="statHoldSec">0.8s</strong></span>
-            <span class="px-3 py-1 rounded-full bg-pink-50 border border-dashed border-pink-300">📚 Sẵn sàng: <strong id="statQuestionCount">5 câu hỏi</strong></span>
-            <span class="px-3 py-1 rounded-full bg-pink-50 border border-dashed border-pink-300">🏆 Tổng điểm: <strong id="statTotalPoints">50 điểm</strong></span>
+        <div class="menu-hero-dock">
+          <div class="menu-actions">
+            <button id="btn-start-game" class="btn-3d btn-3d-green btn-lg" type="button">Bắt đầu phiêu lưu</button>
+            <button id="btn-open-guide" class="btn-3d btn-3d-blue" type="button">Hướng dẫn</button>
+            <button id="btn-open-settings" class="btn-3d btn-3d-purple" type="button">Thiết lập</button>
+            <button id="btn-open-teacher" class="btn-3d btn-3d-amber" type="button">Quản lý câu hỏi (Giáo viên)</button>
           </div>
         </div>
       </section>
 
-      <!-- Khu vực Chọn Bộ Câu Hỏi (Quizizz Style) -->
-      <section class="flex-1 flex flex-col gap-3">
-        <div class="flex items-center justify-between px-1">
-          <h3 class="font-display text-lg sm:text-xl font-bold text-pink-700 flex items-center gap-2">
-            <span>🎯</span><span>Chọn Bộ Câu Hỏi</span>
-          </h3>
-          <span class="text-xs sm:text-sm text-pink-500 font-medium">Bấm chọn bộ đề để bắt đầu chơi ngay</span>
-        </div>
-        <div id="quizGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-      </section>
-
-      <!-- Footer nhắc nhanh 4 cử chỉ -->
-      <footer id="homeFooterQuickGuide" class="stitch-card px-4 py-3 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm font-semibold text-pink-700"></footer>
-    </div>
-
-    <!-- ==================== 2. MÀN HÌNH CHƠI GAME ==================== -->
-    <div id="gameScreen" class="hidden flex-1 flex flex-col max-w-[1440px] w-full mx-auto px-3 sm:px-5 py-3 gap-3">
-      <!-- Header Game -->
-      <header class="stitch-card px-4 py-2.5 flex flex-wrap items-center justify-between gap-2">
-        <div class="flex items-center gap-2.5">
-          <button onclick="exitGameToHome()" class="px-3 py-1.5 rounded-2xl bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold text-xs sm:text-sm border-2 border-dashed border-pink-300 flex items-center gap-1 transition">
-            <span>🏠</span><span>Trang chủ</span>
-          </button>
-          <div>
-            <div id="gameQuizTitle" class="font-display font-bold text-sm sm:text-base text-pink-700 leading-tight">Bộ đề</div>
-            <div class="text-[11px] sm:text-xs text-pink-500 font-semibold">Tác giả: Thầy Trần Hồng Quân</div>
+      <!-- MÀN HÌNH HƯỚNG DẪN -->
+      <section id="screen-guide" class="overlay-screen hidden">
+        <div class="modal-card pixar-card">
+          <h2>Hướng dẫn chơi</h2>
+          <div class="guide-grid">
+            <div class="guide-item">
+              <h3>1. Vượt chặng &amp; Né đòn</h3>
+              <p>Nhấn nút <strong>Nhảy</strong> (hoặc phím <strong>Space</strong>) để Bé Mầm nhảy thu thập Sao Tri Thức giữa các đợt quái vật.</p>
+            </div>
+            <div class="guide-item">
+              <h3>2. Chiến đấu bằng Tri Thức</h3>
+              <p>Chọn nhanh đáp án đúng <strong>A, B, C, D</strong>. Mỗi lượt chơi, thứ tự câu hỏi và 4 đáp án đều được đảo ngẫu nhiên.</p>
+            </div>
+            <div class="guide-item">
+              <h3>3. Bộ câu hỏi &amp; Nhiều người</h3>
+              <p>Vào <strong>Thiết lập</strong> để chọn bộ câu hỏi theo môn học và chọn chế độ <strong>1–4 người/đội</strong> thi đấu trên cùng màn hình.</p>
+            </div>
+            <div class="guide-item">
+              <h3>4. Dành cho Giáo viên</h3>
+              <p>Mở mục <strong>Quản lý câu hỏi</strong> để thêm, sửa, xóa hoặc nhập/xuất bộ câu hỏi JSON/CSV theo bài học.</p>
+            </div>
           </div>
-        </div>
-
-        <div class="flex items-center gap-2 sm:gap-3">
-          <div class="px-3.5 py-1.5 rounded-2xl bg-pink-100/80 border-2 border-dashed border-pink-300 font-display font-bold text-xs sm:text-sm text-pink-700">
-            CÂU <span id="gameProgressText">1 / 5</span>
+          <div class="modal-footer">
+            <button id="btn-guide-back" class="btn-3d btn-3d-green" type="button">Đã hiểu</button>
           </div>
-          <div class="px-3.5 py-1.5 rounded-2xl bg-amber-100/90 border-2 border-dashed border-amber-300 font-display font-bold text-xs sm:text-sm text-amber-700">
-            ★ <span id="gameScoreText">0</span> điểm
-          </div>
-          <button onclick="toggleBgm()" class="p-2 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 border border-dashed border-pink-300" title="Nhạc nền">
-            <span class="bgm-note">🎵</span>
-          </button>
-          <button onclick="toggleSfx()" class="p-2 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 border border-dashed border-pink-300" title="Âm thanh">
-            <span class="sfx-icon">🔊</span>
-          </button>
-          <button onclick="toggleFullscreen()" class="p-2 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 border border-dashed border-pink-300" title="Toàn màn hình">
-            <span>⛶</span>
-          </button>
-        </div>
-      </header>
-
-      <!-- Khung Câu Hỏi & Candy Timer Bar -->
-      <section class="stitch-card px-5 py-4 flex flex-col gap-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div class="flex items-center gap-2">
-            <span id="questionBadge" class="px-3 py-1 rounded-full bg-pink-500 text-white font-display font-bold text-xs sm:text-sm">Câu 1</span>
-            <span id="questionPointsBadge" class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 border border-dashed border-amber-300 font-bold text-xs sm:text-sm">+10 điểm</span>
-          </div>
-          <div id="timerNumberBadge" class="px-3.5 py-1 rounded-full bg-pink-50 border-2 border-dashed border-pink-300 font-display font-bold text-sm text-pink-700">
-            ⏱️ <span id="timerSecText">20</span>s
-          </div>
-        </div>
-
-        <div class="flex flex-col md:flex-row items-center gap-4">
-          <div id="questionText" class="flex-1 font-display text-lg sm:text-2xl md:text-3xl font-bold text-pink-900 leading-snug text-center md:text-left">
-            Nội dung câu hỏi...
-          </div>
-          <img id="questionImage" src="" alt="Minh họa câu hỏi" class="hidden max-h-36 rounded-2xl border-2 border-dashed border-pink-300 object-contain bg-white p-1 shadow-sm" />
-        </div>
-
-        <!-- Candy Timer Bar -->
-        <div class="w-full h-3.5 bg-pink-100 rounded-full overflow-hidden border border-pink-200 p-0.5">
-          <div id="candyTimerBar" class="h-full rounded-full bg-gradient-to-r from-pink-400 via-rose-400 to-fuchsia-500 transition-all duration-150" style="width: 100%"></div>
         </div>
       </section>
 
-      <!-- Sân khấu tương tác 3 cột -->
-      <section class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch min-h-[380px]">
-        <!-- Cột Trái: A và C -->
-        <div class="lg:col-span-4 flex flex-col gap-3.5 justify-between">
-          <div id="optionCardA" class="flex-1"></div>
-          <div id="optionCardC" class="flex-1"></div>
-        </div>
-
-        <!-- Cột Giữa: Webcam + Canvas AI -->
-        <div class="lg:col-span-4 flex flex-col stitch-card p-3 gap-2.5 justify-between">
-          <div id="cameraStatusBar" class="px-3 py-1.5 rounded-2xl bg-pink-50 border border-dashed border-pink-300 text-center text-xs sm:text-sm font-bold text-pink-700 flex items-center justify-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" id="camStatusDot"></span>
-            <span id="camStatusText">Đang mở Camera...</span>
-          </div>
-
-          <div class="relative flex-1 min-h-[240px] sm:min-h-[290px] w-full rounded-2xl overflow-hidden bg-pink-950/90 border-2 border-dashed border-pink-300 flex items-center justify-center">
-            <video id="gameVideo" autoplay playsinline muted class="w-full h-full object-cover mirror-mode"></video>
-            <canvas id="gameCanvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none mirror-mode"></canvas>
-
-            <!-- Lớp phủ khi lỗi / chưa có camera -->
-            <div id="cameraFallbackOverlay" class="hidden absolute inset-0 bg-pink-950/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-5 text-white gap-3">
-              <div class="text-4xl">📷</div>
-              <p id="cameraErrorMsg" class="text-sm font-semibold text-pink-100">Chưa kết nối được Camera. Bạn vẫn có thể bấm trực tiếp vào đáp án A/B/C/D hoặc phím 1–4!</p>
-              <button onclick="retryGameCamera()" class="px-4 py-2 rounded-2xl bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs sm:text-sm stitch-btn">
-                🔄 Thử mở lại Camera
-              </button>
+      <!-- MÀN HÌNH THIẾT LẬP -->
+      <section id="screen-settings" class="overlay-screen hidden">
+        <div class="modal-card pixar-card">
+          <h2>Thiết lập trò chơi</h2>
+          <div class="settings-form">
+            <div class="setting-row">
+              <label for="setting-qset">Bộ câu hỏi (Chủ đề)</label>
+              <select id="setting-qset">
+                <option value="all">Tất cả câu hỏi</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <label for="setting-qcount">Số câu hỏi khi chơi</label>
+              <select id="setting-qcount">
+                <option value="all" selected>Chạy hết toàn bộ câu trong bộ</option>
+                <option value="5">Giới hạn 5 câu</option>
+                <option value="10">Giới hạn 10 câu</option>
+                <option value="15">Giới hạn 15 câu</option>
+                <option value="20">Giới hạn 20 câu</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <label for="setting-players">Số người chơi / Đội (tối đa 4)</label>
+              <select id="setting-players">
+                <option value="1" selected>1 Người chơi (Đấu đơn)</option>
+                <option value="2">2 Người / 2 Đội</option>
+                <option value="3">3 Người / 3 Đội</option>
+                <option value="4">4 Người / 4 Đội</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <label for="setting-time">Thời gian mỗi câu (giây)</label>
+              <select id="setting-time">
+                <option value="15">15 giây</option>
+                <option value="20" selected>20 giây</option>
+                <option value="30">30 giây</option>
+                <option value="45">45 giây</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <label for="setting-sound-toggle">Âm thanh tổng</label>
+              <input id="setting-sound-toggle" type="checkbox" checked />
+            </div>
+            <div class="setting-row">
+              <label for="setting-bgm-vol">Âm lượng nhạc nền</label>
+              <input id="setting-bgm-vol" type="range" min="0" max="1" step="0.05" value="0.4" />
+            </div>
+            <div class="setting-row">
+              <label for="setting-sfx-vol">Âm lượng hiệu ứng</label>
+              <input id="setting-sfx-vol" type="range" min="0" max="1" step="0.05" value="0.8" />
             </div>
           </div>
-
-          <!-- Thanh tiến độ giữ cử chỉ kẹo ngọt dưới camera -->
-          <div class="space-y-1">
-            <div class="flex items-center justify-between text-xs font-bold text-pink-700 px-1">
-              <span id="holdGestureLabel">Giữ nguyên cử chỉ để chọn đáp án</span>
-              <span id="holdPercentLabel">0%</span>
-            </div>
-            <div class="w-full h-3.5 bg-pink-100 rounded-full overflow-hidden border border-pink-200 p-0.5">
-              <div id="holdProgressBar" class="h-full rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-pink-500 transition-all duration-75" style="width: 0%"></div>
-            </div>
-            <div class="text-[11px] text-center text-pink-500 font-medium">
-              Mẹo: Có thể click thẻ đáp án hoặc nhấn phím <strong>A / B / C / D</strong> (hoặc <strong>1–4</strong>)
-            </div>
+          <div class="modal-footer">
+            <button id="btn-settings-save" class="btn-3d btn-3d-green" type="button">Lưu thiết lập</button>
+            <button id="btn-settings-cancel" class="btn-3d btn-3d-slate" type="button">Đóng</button>
           </div>
-        </div>
-
-        <!-- Cột Phải: B và D -->
-        <div class="lg:col-span-4 flex flex-col gap-3.5 justify-between">
-          <div id="optionCardB" class="flex-1"></div>
-          <div id="optionCardD" class="flex-1"></div>
         </div>
       </section>
-    </div>
 
-    <!-- ==================== 3. MÀN HÌNH CÀI ĐẶT GIÁO VIÊN (3 TAB) ==================== -->
-    <div id="settingsScreen" class="hidden flex-1 flex flex-col max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 gap-4">
-      <header class="stitch-card px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <button onclick="closeSettingsScreen()" class="px-3.5 py-2 rounded-2xl bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold text-xs sm:text-sm border-2 border-dashed border-pink-300 flex items-center gap-1.5 transition">
-            <span>⬅️</span><span>Quay lại Trang chủ</span>
-          </button>
-          <div>
-            <h2 class="font-display text-lg sm:text-xl font-bold text-pink-700">Cài Đặt Giáo Viên</h2>
-            <p class="text-xs text-pink-500 font-semibold">Tác giả: Thầy Trần Hồng Quân • Dữ liệu tự động lưu vào trình duyệt</p>
+      <!-- MÀN HÌNH TẠM DỪNG -->
+      <section id="screen-pause" class="overlay-screen hidden">
+        <div class="modal-card modal-sm pixar-card">
+          <h2>Trò chơi đang tạm dừng</h2>
+          <p>Bạn có thể tiếp tục hoặc quay về trang chủ bất cứ lúc nào.</p>
+          <div class="menu-actions" style="margin-top:14px;">
+            <button id="btn-resume-game" class="btn-3d btn-3d-green" type="button">Tiếp tục chơi</button>
+            <button id="btn-restart-from-pause" class="btn-3d btn-3d-blue" type="button">Chơi lại từ đầu</button>
+            <button id="btn-quit-to-menu" class="btn-3d btn-3d-red" type="button">Về trang chủ</button>
           </div>
         </div>
+      </section>
 
-        <div class="flex flex-wrap gap-2">
-          <button onclick="switchSettingsTab('quizzes')" id="tabBtn-quizzes" class="px-4 py-2 rounded-2xl font-bold text-xs sm:text-sm border-2 border-dashed transition">
-            📚 1. Quản lý Bộ Đề
-          </button>
-          <button onclick="switchSettingsTab('rules')" id="tabBtn-rules" class="px-4 py-2 rounded-2xl font-bold text-xs sm:text-sm border-2 border-dashed transition">
-            🎛️ 2. Luật chơi &amp; Cử chỉ
-          </button>
-          <button onclick="switchSettingsTab('camera')" id="tabBtn-camera" class="px-4 py-2 rounded-2xl font-bold text-xs sm:text-sm border-2 border-dashed transition">
-            📷 3. Kiểm tra Cử chỉ &amp; Camera
-          </button>
-        </div>
-      </header>
-
-      <!-- TAB 1: QUẢN LÝ BỘ ĐỀ (KIỂU QUIZIZZ) -->
-      <div id="settingsTab-quizzes" class="flex-1 flex flex-col gap-4">
-        <!-- Thanh chọn/tạo bộ đề -->
-        <div class="stitch-card p-4 flex flex-col gap-3">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <h3 class="font-display font-bold text-base sm:text-lg text-pink-700">Danh sách Bộ Đề</h3>
-            <div class="flex flex-wrap gap-2">
-              <button onclick="createNewQuiz()" class="px-3 py-1.5 rounded-xl bg-pink-500 text-white font-bold text-xs sm:text-sm stitch-btn">+ Tạo bộ đề mới</button>
-              <button onclick="duplicateCurrentQuiz()" class="px-3 py-1.5 rounded-xl bg-pink-100 text-pink-700 font-bold text-xs sm:text-sm border border-dashed border-pink-300">📄 Nhân bản</button>
-              <button onclick="promptRenameQuiz()" class="px-3 py-1.5 rounded-xl bg-pink-100 text-pink-700 font-bold text-xs sm:text-sm border border-dashed border-pink-300">✏️ Đổi tên / Chủ đề</button>
-              <button onclick="confirmDeleteCurrentQuiz()" class="px-3 py-1.5 rounded-xl bg-rose-100 text-rose-700 font-bold text-xs sm:text-sm border border-dashed border-rose-300">🗑️ Xóa bộ đề</button>
-              <button onclick="confirmRestoreSamples()" class="px-3 py-1.5 rounded-xl bg-amber-100 text-amber-800 font-bold text-xs sm:text-sm border border-dashed border-amber-300">♻️ Khôi phục bộ đề mẫu</button>
+      <!-- MÀN HÌNH TỔNG KẾT -->
+      <section id="screen-result" class="overlay-screen hidden">
+        <div class="modal-card pixar-card">
+          <div class="result-badge" id="result-badge">Chiến thắng!</div>
+          <h2 id="result-title">Khu rừng đã sáng bừng tri thức!</h2>
+          <div class="result-stats" id="solo-result-stats">
+            <div class="stat-box">
+              <span class="stat-label">Tổng điểm</span>
+              <strong class="stat-val" id="res-score">0</strong>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Trả lời đúng</span>
+              <strong class="stat-val" id="res-correct">0 / 0</strong>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Combo cao nhất</span>
+              <strong class="stat-val" id="res-combo">0</strong>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Mạng còn lại</span>
+              <strong class="stat-val" id="res-lives">0</strong>
             </div>
           </div>
-          <div id="settingsQuizPills" class="flex flex-wrap gap-2"></div>
+          <div class="leaderboard-wrap hidden" id="multiplayer-leaderboard"></div>
+          <div class="modal-footer">
+            <button id="btn-play-again" class="btn-3d btn-3d-green" type="button">Chơi lại</button>
+            <button id="btn-result-menu" class="btn-3d btn-3d-slate" type="button">Về trang chủ</button>
+          </div>
         </div>
+      </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <!-- Form thêm/sửa 1 câu hỏi -->
-          <div class="lg:col-span-5 stitch-card p-4 flex flex-col gap-3">
-            <div class="flex items-center justify-between">
-              <h4 id="qFormTitle" class="font-display font-bold text-base text-pink-700">➕ Thêm câu hỏi mới</h4>
-              <button id="qCancelEditBtn" onclick="resetQuestionForm()" class="hidden text-xs font-bold text-rose-600 underline">Hủy sửa</button>
-            </div>
+      <!-- MÀN HÌNH QUẢN LÝ CÂU HỎI (GIÁO VIÊN) -->
+      <section id="screen-teacher" class="overlay-screen hidden">
+        <div class="teacher-card pixar-card">
+          <div class="teacher-header">
+            <h2>Quản lý bộ câu hỏi (Giáo viên)</h2>
+            <button id="btn-teacher-close" class="btn-3d btn-3d-slate" type="button">Đóng</button>
+          </div>
 
-            <div>
-              <label class="block text-xs font-bold text-pink-700 mb-1">Nội dung câu hỏi *</label>
-              <textarea id="qInputText" rows="2" class="w-full rounded-xl border-2 border-dashed border-pink-200 focus:border-pink-400 outline-none p-2.5 text-sm bg-white" placeholder="Nhập câu hỏi tại đây..."></textarea>
-            </div>
+          <div class="teacher-toolbar">
+            <input id="teacher-search" type="search" placeholder="Tìm kiếm câu hỏi hoặc chủ đề..." />
+            <button id="btn-q-add" class="btn-3d btn-3d-green btn-sm" type="button">+ Thêm câu hỏi</button>
+            <label class="btn-3d btn-3d-blue btn-sm file-btn">
+              Nhập JSON/CSV
+              <input id="input-import-file" type="file" accept=".json,.csv" hidden />
+            </label>
+            <button id="btn-export-json" class="btn-3d btn-3d-slate btn-sm" type="button">Xuất JSON</button>
+            <button id="btn-export-csv" class="btn-3d btn-3d-slate btn-sm" type="button">Xuất CSV</button>
+            <button id="btn-restore-default" class="btn-3d btn-3d-red btn-sm" type="button">Khôi phục mặc định</button>
+          </div>
 
-            <div class="flex flex-wrap items-center gap-2">
-              <label class="px-3 py-1.5 rounded-xl bg-pink-50 border border-dashed border-pink-300 text-xs font-bold text-pink-700 cursor-pointer hover:bg-pink-100">
-                🖼️ Ảnh minh họa câu hỏi
-                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'q')" />
+          <div id="teacher-alert" class="teacher-alert hidden"></div>
+
+          <div class="teacher-body">
+            <div class="q-list-wrap" id="teacher-q-list"></div>
+
+            <form id="teacher-q-form" class="q-form hidden">
+              <h3 id="q-form-title">Thêm câu hỏi mới</h3>
+              <input type="hidden" id="q-edit-id" />
+              <label>Chủ đề / Bộ câu hỏi
+                <input id="q-input-category" type="text" placeholder="Ví dụ: Toán học, Lịch sử..." required />
               </label>
-              <button id="clearQImgBtn" onclick="clearFormImage('q')" class="hidden text-xs text-rose-600 font-bold">Xóa ảnh</button>
-              <img id="qImgPreview" src="" class="hidden h-12 rounded-lg border border-pink-200 object-contain" />
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <div class="p-2.5 rounded-2xl bg-blue-50/70 border border-dashed border-blue-300 space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-extrabold text-blue-700">Đáp án A</span>
-                  <label class="text-[11px] font-bold text-blue-600 cursor-pointer">+ Ảnh A <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'A')" /></label>
-                </div>
-                <input id="qInputA" type="text" class="w-full rounded-lg border border-blue-200 p-1.5 text-xs bg-white outline-none" placeholder="Nội dung đáp án A" />
-                <img id="previewA" class="hidden h-10 rounded object-contain" />
+              <label>Nội dung câu hỏi
+                <textarea id="q-input-question" rows="2" placeholder="Nhập nội dung câu hỏi..." required></textarea>
+              </label>
+              <div class="q-opts-grid">
+                <label>Phương án A <input id="q-opt-0" type="text" required /></label>
+                <label>Phương án B <input id="q-opt-1" type="text" required /></label>
+                <label>Phương án C <input id="q-opt-2" type="text" required /></label>
+                <label>Phương án D <input id="q-opt-3" type="text" required /></label>
               </div>
-              <div class="p-2.5 rounded-2xl bg-emerald-50/70 border border-dashed border-emerald-300 space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-extrabold text-emerald-700">Đáp án B</span>
-                  <label class="text-[11px] font-bold text-emerald-600 cursor-pointer">+ Ảnh B <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'B')" /></label>
-                </div>
-                <input id="qInputB" type="text" class="w-full rounded-lg border border-emerald-200 p-1.5 text-xs bg-white outline-none" placeholder="Nội dung đáp án B" />
-                <img id="previewB" class="hidden h-10 rounded object-contain" />
-              </div>
-              <div class="p-2.5 rounded-2xl bg-violet-50/70 border border-dashed border-violet-300 space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-extrabold text-violet-700">Đáp án C</span>
-                  <label class="text-[11px] font-bold text-violet-600 cursor-pointer">+ Ảnh C <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'C')" /></label>
-                </div>
-                <input id="qInputC" type="text" class="w-full rounded-lg border border-violet-200 p-1.5 text-xs bg-white outline-none" placeholder="Nội dung đáp án C" />
-                <img id="previewC" class="hidden h-10 rounded object-contain" />
-              </div>
-              <div class="p-2.5 rounded-2xl bg-rose-50/70 border border-dashed border-rose-300 space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-extrabold text-rose-700">Đáp án D</span>
-                  <label class="text-[11px] font-bold text-rose-600 cursor-pointer">+ Ảnh D <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'D')" /></label>
-                </div>
-                <input id="qInputD" type="text" class="w-full rounded-lg border border-rose-200 p-1.5 text-xs bg-white outline-none" placeholder="Nội dung đáp án D" />
-                <img id="previewD" class="hidden h-10 rounded object-contain" />
-              </div>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2">
-              <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">Đáp án đúng</label>
-                <select id="qInputCorrect" class="w-full rounded-xl border-2 border-dashed border-pink-200 p-2 text-xs font-bold bg-white">
-                  <option value="A">A</option>
-                  <option value="B">B</option>
-                  <option value="C">C</option>
-                  <option value="D">D</option>
+              <label>Đáp án đúng
+                <select id="q-input-correct">
+                  <option value="0">Phương án A</option>
+                  <option value="1">Phương án B</option>
+                  <option value="2">Phương án C</option>
+                  <option value="3">Phương án D</option>
                 </select>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">Điểm</label>
-                <input id="qInputPoints" type="number" min="1" max="100" value="10" class="w-full rounded-xl border-2 border-dashed border-pink-200 p-2 text-xs font-bold bg-white" />
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">Thời gian (giây)</label>
-                <input id="qInputTime" type="number" min="5" max="180" value="20" class="w-full rounded-xl border-2 border-dashed border-pink-200 p-2 text-xs font-bold bg-white" />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-pink-700 mb-1">Lời giải thích (hiện khi trả lời đúng)</label>
-              <input id="qInputExplain" type="text" class="w-full rounded-xl border-2 border-dashed border-pink-200 p-2 text-xs bg-white outline-none" placeholder="Ví dụ: 12 + 8 = 20..." />
-            </div>
-
-            <button onclick="saveQuestionFromForm()" class="w-full py-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-sm stitch-btn shadow">
-              💾 Lưu câu hỏi vào bộ đề
-            </button>
-
-            <!-- Nhập hàng loạt & file .txt -->
-            <div class="pt-3 border-t-2 border-dashed border-pink-200 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-extrabold text-pink-700">📥 Nhập nhanh hàng loạt (Bulk Paste / .txt)</span>
-                <label class="px-2.5 py-1 rounded-xl bg-pink-100 text-pink-700 text-[11px] font-bold cursor-pointer hover:bg-pink-200">
-                  📄 Tải file .txt
-                  <input type="file" accept=".txt,text/plain" class="hidden" onchange="handleTxtImport(event)" />
-                </label>
-              </div>
-              <textarea id="bulkPasteBox" rows="4" class="w-full rounded-xl border-2 border-dashed border-pink-200 p-2 text-xs bg-white outline-none" placeholder="Mẫu chuẩn:
-Câu 1: Thủ đô của Việt Nam là gì?
-A. Đà Nẵng
-B. Hà Nội
-C. TP. Hồ Chí Minh
-D. Hải Phòng
-Đáp án: B
-Giải thích: Hà Nội là thủ đô của Việt Nam."></textarea>
-              <button onclick="parseBulkQuestions()" class="w-full py-2 rounded-xl bg-pink-100 hover:bg-pink-200 text-pink-800 font-bold text-xs border border-dashed border-pink-300 transition">
-                ✨ Phân tích &amp; Thêm hàng loạt vào bộ đề
-              </button>
-            </div>
-          </div>
-
-          <!-- Bảng xem trước toàn bộ câu hỏi -->
-          <div class="lg:col-span-7 stitch-card p-4 flex flex-col gap-3">
-            <div class="flex items-center justify-between">
-              <h4 class="font-display font-bold text-base text-pink-700">
-                📋 Danh sách câu hỏi (<span id="settingsQuestionCount">0</span> câu)
-              </h4>
-              <span id="settingsActiveQuizLabel" class="text-xs font-bold text-pink-500"></span>
-            </div>
-            <div id="settingsQuestionList" class="flex-1 overflow-y-auto max-h-[680px] space-y-2.5 pr-1"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 2: LUẬT CHƠI & GIỮ CỬ CHỈ -->
-      <div id="settingsTab-rules" class="hidden stitch-card p-5 space-y-5">
-        <h3 class="font-display font-bold text-lg text-pink-700">Tùy chỉnh Luật chơi, Giao diện &amp; Ánh xạ Cử chỉ</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div class="p-4 rounded-2xl bg-pink-50/70 border border-dashed border-pink-300 space-y-2">
-            <label class="block text-sm font-bold text-pink-800">⏱️ Thời gian giữ cử chỉ xác nhận (giây)</label>
-            <input id="ruleHoldDuration" type="number" step="0.1" min="0.3" max="3.0" onchange="updateRuleSetting('holdDuration', parseFloat(this.value))" class="w-full rounded-xl border border-pink-300 p-2 text-sm font-bold bg-white" />
-            <p class="text-xs text-pink-600">Mặc định: 0.8s (độ trễ vừa phải để học sinh không chọn nhầm).</p>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-pink-50/70 border border-dashed border-pink-300 space-y-2">
-            <label class="block text-sm font-bold text-pink-800">⏳ Thời gian mặc định mỗi câu (giây)</label>
-            <input id="ruleDefaultTime" type="number" min="5" max="180" onchange="updateRuleSetting('defaultTime', parseInt(this.value))" class="w-full rounded-xl border border-pink-300 p-2 text-sm font-bold bg-white" />
-          </div>
-
-          <div class="p-4 rounded-2xl bg-pink-50/70 border border-dashed border-pink-300 space-y-2">
-            <label class="block text-sm font-bold text-pink-800">⭐ Điểm mặc định mỗi câu</label>
-            <input id="ruleDefaultPoints" type="number" min="1" max="100" onchange="updateRuleSetting('defaultPoints', parseInt(this.value))" class="w-full rounded-xl border border-pink-300 p-2 text-sm font-bold bg-white" />
-          </div>
-
-          <div class="p-4 rounded-2xl bg-pink-50/70 border border-dashed border-pink-300 space-y-2">
-            <label class="block text-sm font-bold text-pink-800">❌ Xử lý khi trả lời sai</label>
-            <select id="ruleWrongMode" onchange="updateRuleSetting('wrongMode', this.value)" class="w-full rounded-xl border border-pink-300 p-2 text-sm font-bold bg-white">
-              <option value="next">Hiện đáp án đúng &amp; Chuyển câu tiếp</option>
-              <option value="retry">Khích lệ &amp; Cho thử lại câu này</option>
-            </select>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-pink-50/70 border border-dashed border-pink-300 space-y-2">
-            <label class="block text-sm font-bold text-pink-800">🎉 Hiệu ứng &amp; Âm thanh</label>
-            <div class="space-y-2 text-sm font-semibold text-pink-800">
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input id="ruleConfetti" type="checkbox" onchange="updateRuleSetting('enableConfetti', this.checked)" class="w-4 h-4 accent-pink-500" />
-                <span>Bật pháo hoa Confetti ăn mừng</span>
               </label>
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input id="ruleSfx" type="checkbox" onchange="updateRuleSetting('enableSfx', this.checked)" class="w-4 h-4 accent-pink-500" />
-                <span>Bật hiệu ứng âm thanh (SFX)</span>
+              <label>Giải thích đáp án (không bắt buộc)
+                <input id="q-input-explanation" type="text" placeholder="Giải thích ngắn gọn..." />
               </label>
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input id="ruleMirror" type="checkbox" onchange="updateRuleSetting('mirrorCamera', this.checked)" class="w-4 h-4 accent-pink-500" />
-                <span>Lật gương Camera (Mirror Mode)</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-pink-50/70 border border-dashed border-pink-300 space-y-2">
-            <label class="block text-sm font-bold text-pink-800">🖼️ Ảnh nền tùy chỉnh</label>
-            <div class="flex flex-wrap items-center gap-2">
-              <label class="px-3 py-1.5 rounded-xl bg-white border border-dashed border-pink-300 text-xs font-bold text-pink-700 cursor-pointer hover:bg-pink-100">
-                Chọn ảnh nền
-                <input type="file" accept="image/*" class="hidden" onchange="handleCustomBgUpload(event)" />
-              </label>
-              <button onclick="clearCustomBg()" class="px-3 py-1.5 rounded-xl bg-rose-100 text-rose-700 text-xs font-bold">Xóa ảnh nền</button>
-            </div>
-            <p class="text-xs text-pink-600">Phủ nhẹ 25% phía sau giao diện hồng pastel.</p>
-          </div>
-        </div>
-
-        <!-- Ánh xạ cử chỉ A B C D -->
-        <div class="p-4 rounded-2xl bg-white border-2 border-dashed border-pink-200 space-y-3">
-          <h4 class="font-display font-bold text-base text-pink-700">🙆 Ánh xạ Cử chỉ cho 4 Đáp án</h4>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" id="gestureMappingGrid"></div>
-        </div>
-      </div>
-
-      <!-- TAB 3: KIỂM TRA CỬ CHỈ & CAMERA -->
-      <div id="settingsTab-camera" class="hidden stitch-card p-5 space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h3 class="font-display font-bold text-lg text-pink-700">Kiểm tra Camera &amp; Khung xương AI trước giờ dạy</h3>
-            <p class="text-xs sm:text-sm text-pink-600">Kiểm tra góc đứng (khuyến nghị 1.5–2.5m trước máy chiếu) và ánh sáng lớp học.</p>
-          </div>
-          <div class="px-3.5 py-1.5 rounded-full bg-pink-100 border border-dashed border-pink-300 text-xs sm:text-sm font-bold text-pink-700" id="testCamStatus">
-            Sẵn sàng kiểm tra
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
-          <div class="lg:col-span-7 relative aspect-video w-full rounded-3xl overflow-hidden bg-pink-950/90 border-2 border-dashed border-pink-300 flex items-center justify-center">
-            <video id="testVideo" autoplay playsinline muted class="w-full h-full object-cover mirror-mode"></video>
-            <canvas id="testCanvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none mirror-mode"></canvas>
-            <div id="testCamFallback" class="hidden absolute inset-0 bg-pink-950/85 flex flex-col items-center justify-center text-white p-4 gap-3 text-center">
-              <p class="text-sm font-semibold">Không thể truy cập Camera. Vui lòng cấp quyền camera cho trình duyệt.</p>
-              <button onclick="startCameraFor('test')" class="px-4 py-2 rounded-2xl bg-pink-500 text-white font-bold text-xs stitch-btn">Thử mở lại</button>
-            </div>
-          </div>
-
-          <div class="lg:col-span-5 grid grid-cols-2 gap-3" id="testGestureCards"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== MODALS & TOAST ==================== -->
-  <!-- Modal Cách Chơi -->
-  <div id="howToModal" class="hidden fixed inset-0 z-50 bg-pink-950/40 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="stitch-card-strong max-w-xl w-full p-6 space-y-4 animate-pop">
-      <div class="flex items-center justify-between">
-        <h3 class="font-display text-xl font-bold text-pink-700">📖 Hướng Dẫn Chơi EduPose</h3>
-        <button onclick="closeModal('howToModal')" class="w-8 h-8 rounded-full bg-pink-100 text-pink-700 font-bold">✕</button>
-      </div>
-      <div class="space-y-3 text-sm text-pink-900">
-        <div class="p-3 rounded-2xl bg-pink-50 border border-dashed border-pink-300 flex gap-3 items-start">
-          <span class="text-xl">1️⃣</span>
-          <div><strong>Chọn bộ đề &amp; Đứng trước Camera:</strong> Đứng cách webcam/máy chiếu khoảng 1.5–2.5m để thấy rõ từ đầu đến hông.</div>
-        </div>
-        <div class="p-3 rounded-2xl bg-pink-50 border border-dashed border-pink-300 flex gap-3 items-start">
-          <span class="text-xl">2️⃣</span>
-          <div><strong>Thực hiện cử chỉ đáp án:</strong> Giơ tay trái (<strong>A</strong>), giơ tay phải (<strong>B</strong>), dang hai tay ngang (<strong>C</strong>), hoặc giơ cả hai tay (<strong>D</strong>).</div>
-        </div>
-        <div class="p-3 rounded-2xl bg-pink-50 border border-dashed border-pink-300 flex gap-3 items-start">
-          <span class="text-xl">3️⃣</span>
-          <div><strong>Giữ yên 0.8 giây để chốt:</strong> Khi thanh tiến độ chạy đầy 100%, hệ thống tự động khóa đáp án và cộng điểm!</div>
-        </div>
-      </div>
-      <button onclick="closeModal('howToModal')" class="w-full py-2.5 rounded-2xl bg-pink-500 text-white font-bold stitch-btn">Đã hiểu, sẵn sàng chơi!</button>
-    </div>
-  </div>
-
-  <!-- Modal Phản Hồi Kết Quả Câu Hỏi -->
-  <div id="feedbackModal" class="hidden fixed inset-0 z-50 bg-pink-950/45 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="stitch-card-strong max-w-md w-full p-6 text-center space-y-4 animate-pop">
-      <img id="feedbackChibi" src="./assets/celebration.png" alt="Chibi phản hồi" class="w-32 h-32 mx-auto object-contain drop-shadow-lg animate-chibi-hero" />
-      <h3 id="feedbackTitle" class="font-display text-2xl font-bold text-pink-600">CHÍNH XÁC! TUYỆT VỜI!</h3>
-      <p id="feedbackSubtitle" class="text-sm font-semibold text-pink-800"></p>
-      <div id="feedbackExplain" class="hidden p-3 rounded-2xl bg-pink-50 border border-dashed border-pink-300 text-xs sm:text-sm text-pink-800 font-medium"></div>
-      <button id="feedbackNextBtn" onclick="proceedAfterFeedback()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-display font-bold text-base stitch-btn shadow-md">
-        Tiếp tục ➜
-      </button>
-    </div>
-  </div>
-
-  <!-- Modal Tổng Kết Ván Chơi -->
-  <div id="summaryModal" class="hidden fixed inset-0 z-50 bg-pink-950/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="stitch-card-strong max-w-lg w-full p-6 text-center space-y-4 animate-pop">
-      <div class="flex items-center justify-center gap-3">
-        <img src="./assets/celebration.png" alt="Chibi ăn mừng" class="w-28 h-28 object-contain animate-chibi" />
-        <img src="./assets/trophy_badge.png" alt="Cúp chiến thắng" class="w-24 h-24 object-contain animate-chibi-delay-1" />
-      </div>
-      <h3 class="font-display text-2xl sm:text-3xl font-bold text-pink-600">HOÀN THÀNH XUẤT SẮC!</h3>
-      <p class="text-xs font-semibold text-pink-500">EduPose – Vui Học Cùng Cử Chỉ • Thầy Trần Hồng Quân</p>
-
-      <div class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-pink-100 to-rose-100 border-4 border-dashed border-pink-400 flex flex-col items-center justify-center shadow-inner">
-        <span class="text-xs font-bold text-pink-500">TỔNG ĐIỂM</span>
-        <span id="summaryScore" class="font-display text-3xl font-extrabold text-pink-700">50</span>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 text-sm font-bold">
-        <div class="p-3 rounded-2xl bg-emerald-50 border border-dashed border-emerald-300 text-emerald-700">
-          ✅ Đúng: <span id="summaryCorrect">0</span> câu
-        </div>
-        <div class="p-3 rounded-2xl bg-rose-50 border border-dashed border-rose-300 text-rose-700">
-          💡 Chưa đúng: <span id="summaryWrong">0</span> câu
-        </div>
-      </div>
-
-      <div class="flex flex-wrap gap-2.5 pt-2">
-        <button onclick="replayGame()" class="flex-1 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-sm stitch-btn">🔄 Chơi Lại</button>
-        <button onclick="summaryToHome()" class="flex-1 py-3 rounded-2xl bg-pink-100 text-pink-700 font-bold text-sm border-2 border-dashed border-pink-300">🏠 Trang Chủ</button>
-        <button onclick="summaryToSettings()" class="px-4 py-3 rounded-2xl bg-pink-50 text-pink-700 font-bold text-sm border-2 border-dashed border-pink-300">⚙️ Cài Đặt</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Xác nhận / Nhập liệu nội bộ (Thay thế window.confirm & window.prompt) -->
-  <div id="dialogModal" class="hidden fixed inset-0 z-50 bg-pink-950/45 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="stitch-card-strong max-w-md w-full p-5 space-y-4 animate-pop">
-      <h3 id="dialogTitle" class="font-display text-lg font-bold text-pink-700">Xác nhận</h3>
-      <p id="dialogMessage" class="text-sm text-pink-900"></p>
-      <div id="dialogInputs" class="hidden space-y-2.5">
-        <input id="dialogInput1" type="text" class="w-full rounded-xl border-2 border-dashed border-pink-300 p-2 text-sm outline-none" placeholder="Tên..." />
-        <input id="dialogInput2" type="text" class="w-full rounded-xl border-2 border-dashed border-pink-300 p-2 text-sm outline-none" placeholder="Chủ đề / Mô tả..." />
-      </div>
-      <div class="flex justify-end gap-2">
-        <button onclick="closeModal('dialogModal')" class="px-4 py-2 rounded-xl bg-pink-50 text-pink-700 font-bold text-xs sm:text-sm border border-dashed border-pink-300">Hủy</button>
-        <button id="dialogConfirmBtn" class="px-4 py-2 rounded-xl bg-pink-500 text-white font-bold text-xs sm:text-sm stitch-btn">Đồng ý</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Thông báo -->
-  <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden px-4 py-3 rounded-2xl bg-pink-600 text-white font-bold text-sm shadow-xl border-2 border-dashed border-white/80 animate-pop"></div>
-
-  <script>
-    // ==================== DỮ LIỆU MẶC ĐỊNH & CẤU HÌNH ====================
-    const STORAGE_KEY = 'edupose_v1_state';
-
-    const GESTURES = {
-      left_hand_up:  { id: 'left_hand_up',  label: 'Giơ tay trái',    img: './assets/left_hand_up.png',  short: 'Tay trái' },
-      right_hand_up: { id: 'right_hand_up', label: 'Giơ tay phải',    img: './assets/right_hand_up.png', short: 'Tay phải' },
-      arms_spread:   { id: 'arms_spread',   label: 'Dang hai tay',    img: './assets/arms_spread.png',   short: 'Dang tay' },
-      both_hands_up: { id: 'both_hands_up', label: 'Giơ cả hai tay',  img: './assets/both_hands_up.png', short: 'Hai tay' },
-    };
-
-    const OPTION_STYLES = {
-      A: { border: 'border-blue-400',    bg: 'bg-blue-50/90',    badge: 'bg-blue-500',    text: 'text-blue-900',    ring: 'ring-blue-400' },
-      B: { border: 'border-emerald-400', bg: 'bg-emerald-50/90', badge: 'bg-emerald-500', text: 'text-emerald-900', ring: 'ring-emerald-400' },
-      C: { border: 'border-violet-400',  bg: 'bg-violet-50/90',  badge: 'bg-violet-500',  text: 'text-violet-900',  ring: 'ring-violet-400' },
-      D: { border: 'border-rose-400',    bg: 'bg-rose-50/90',    badge: 'bg-rose-500',    text: 'text-rose-900',    ring: 'ring-rose-400' },
-    };
-
-    function getDefaultQuizzes() {
-      return [
-        {
-          id: 'quiz_math',
-          subject: 'Toán học',
-          title: 'Toán học vui nhộn',
-          description: 'Tính nhẩm nhanh, hình học cơ bản và tư duy logic.',
-          questions: [
-            { id: 'm1', text: 'Kết quả của phép tính 24 + 16 là bao nhiêu?', options: { A: '38', B: '40', C: '42', D: '36' }, correct: 'B', points: 10, time: 20, explain: '24 + 16 = 40.' },
-            { id: 'm2', text: 'Một hình vuông có cạnh dài 5 cm. Chu vi hình vuông đó là?', options: { A: '20 cm', B: '25 cm', C: '15 cm', D: '10 cm' }, correct: 'A', points: 10, time: 20, explain: 'Chu vi hình vuông = cạnh × 4 = 5 × 4 = 20 cm.' },
-            { id: 'm3', text: 'Số nào chia hết cho cả 2 và 5 trong các số sau?', options: { A: '25', B: '32', C: '50', D: '45' }, correct: 'C', points: 10, time: 20, explain: 'Số có chữ số tận cùng là 0 thì chia hết cho cả 2 và 5.' },
-            { id: 'm4', text: '1 giờ 15 phút bằng bao nhiêu phút?', options: { A: '65 phút', B: '70 phút', C: '85 phút', D: '75 phút' }, correct: 'D', points: 10, time: 20, explain: '1 giờ = 60 phút, cộng thêm 15 phút là 75 phút.' },
-            { id: 'm5', text: 'Hình tam giác có bao nhiêu cạnh?', options: { A: '2 cạnh', B: '3 cạnh', C: '4 cạnh', D: '5 cạnh' }, correct: 'B', points: 10, time: 15, explain: 'Hình tam giác luôn có 3 cạnh và 3 góc.' }
-          ]
-        },
-        {
-          id: 'quiz_science',
-          subject: 'Khoa học',
-          title: 'Khám phá Khoa học',
-          description: 'Kiến thức tự nhiên, cơ thể người và môi trường xanh.',
-          questions: [
-            { id: 's1', text: 'Cây xanh quang hợp nhờ ánh sáng mặt trời và thải ra khí gì?', options: { A: 'Khí Ô-xi (O₂)', B: 'Khí Các-bô-níc', C: 'Khí Ni-tơ', D: 'Khí Hi-đrô' }, correct: 'A', points: 10, time: 20, explain: 'Quang hợp hấp thụ CO₂ và giải phóng khí Ô-xi giúp sự sống duy trì.' },
-            { id: 's2', text: 'Hành tinh nào được mệnh danh là "Hành tinh Đỏ"?', options: { A: 'Sao Kim', B: 'Sao Thủy', C: 'Sao Hỏa', D: 'Sao Mộc' }, correct: 'C', points: 10, time: 20, explain: 'Bề mặt Sao Hỏa giàu oxit sắt nên có màu đỏ đặc trưng.' },
-            { id: 's3', text: 'Nước tinh khiết sôi ở nhiệt độ bao nhiêu độ C (áp suất chuẩn)?', options: { A: '80°C', B: '100°C', C: '90°C', D: '120°C' }, correct: 'B', points: 10, time: 18, explain: 'Ở áp suất khí quyển tiêu chuẩn, nước sôi ở 100°C.' },
-            { id: 's4', text: 'Bộ phận nào của cơ thể giúp bơm máu đi khắp cơ thể?', options: { A: 'Phổi', B: 'Dạ dày', C: 'Gan', D: 'Tim' }, correct: 'D', points: 10, time: 18, explain: 'Tim co bóp nhịp nhàng để tuần hoàn máu nuôi cơ thể.' },
-            { id: 's5', text: 'Nguồn năng lượng nào sau đây là năng lượng tái tạo?', options: { A: 'Năng lượng mặt trời', B: 'Than đá', C: 'Dầu mỏ', D: 'Khí đốt' }, correct: 'A', points: 10, time: 20, explain: 'Năng lượng mặt trời, gió, thủy triều là năng lượng sạch tái tạo.' }
-          ]
-        },
-        {
-          id: 'quiz_life',
-          subject: 'Đố vui đời sống',
-          title: 'Đố vui Đời sống & Kỹ năng',
-          description: 'An toàn giao thông, lịch sử và kỹ năng học đường.',
-          questions: [
-            { id: 'l1', text: 'Khi đi xe đạp điện hoặc xe máy, đội mũ bảo hiểm có tác dụng gì?', options: { A: 'Cho đẹp hơn', B: 'Bảo vệ vùng đầu', C: 'Chạy nhanh hơn', D: 'Tránh bụi giày' }, correct: 'B', points: 10, time: 20, explain: 'Mũ bảo hiểm đạt chuẩn giúp giảm chấn thương vùng đầu khi va chạm.' },
-            { id: 'l2', text: 'Đèn tín hiệu giao thông màu vàng nhấp nháy hoặc bật sáng báo hiệu điều gì?', options: { A: 'Chạy thật nhanh', B: 'Dừng lại hẳn', C: 'Giảm tốc độ, chú ý', D: 'Quay đầu xe' }, correct: 'C', points: 10, time: 20, explain: 'Đèn vàng báo hiệu giảm tốc độ, chuẩn bị dừng trước vạch.' },
-            { id: 'l3', text: 'Ngày Nhà giáo Việt Nam là ngày nào hằng năm?', options: { A: '20/11', B: '20/10', C: '19/5', D: '26/3' }, correct: 'A', points: 10, time: 18, explain: 'Ngày 20/11 là Ngày Nhà giáo Việt Nam.' },
-            { id: 'l4', text: 'Trước khi vận động thể thao mạnh, chúng ta nên làm gì đầu tiên?', options: { A: 'Uống nhiều nước đá', B: 'Chạy nước rút ngay', C: 'Ngồi nghỉ 30 phút', D: 'Khởi động kỹ cơ khớp' }, correct: 'D', points: 10, time: 20, explain: 'Khởi động làm nóng cơ thể giúp phòng tránh chấn thương.' },
-            { id: 'l5', text: 'Khi thấy bạn bị trượt ngã ở sân trường, hành động nào là đúng nhất?', options: { A: 'Cười đùa trêu chọc', B: 'Đỡ bạn dậy, báo thầy cô', C: 'Bỏ đi chỗ khác', D: 'Quay video đăng mạng' }, correct: 'B', points: 10, time: 20, explain: 'Giúp đỡ bạn và báo giáo viên/y tế trường khi cần thiết.' }
-          ]
-        }
-      ];
-    }
-
-    function getDefaultSettings() {
-      return {
-        holdDuration: 0.8,
-        defaultTime: 20,
-        defaultPoints: 10,
-        wrongMode: 'next',
-        enableConfetti: true,
-        enableSfx: true,
-        enableBgm: false,
-        mirrorCamera: true,
-        customBg: '',
-        gestureMap: {
-          A: 'left_hand_up',
-          B: 'right_hand_up',
-          C: 'arms_spread',
-          D: 'both_hands_up'
-        }
-      };
-    }
-
-    let appState = {
-      quizzes: getDefaultQuizzes(),
-      selectedQuizId: 'quiz_math',
-      settings: getDefaultSettings()
-    };
-
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed.quizzes) && parsed.quizzes.length > 0) {
-            appState.quizzes = parsed.quizzes;
-          }
-          if (parsed.selectedQuizId) appState.selectedQuizId = parsed.selectedQuizId;
-          if (parsed.settings) {
-            appState.settings = { ...getDefaultSettings(), ...parsed.settings, gestureMap: { ...getDefaultSettings().gestureMap, ...(parsed.settings.gestureMap || {}) } };
-          }
-        }
-      } catch (e) {
-        console.warn('Không đọc được localStorage:', e);
-      }
-      if (!appState.quizzes.some(q => q.id === appState.selectedQuizId)) {
-        appState.selectedQuizId = appState.quizzes[0].id;
-      }
-    }
-
-    function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-      } catch (e) {
-        showToast('Bộ nhớ trình duyệt đầy, hãy giảm bớt ảnh dung lượng lớn.');
-      }
-    }
-
-    function getSelectedQuiz() {
-      return appState.quizzes.find(q => q.id === appState.selectedQuizId) || appState.quizzes[0];
-    }
-
-    // ==================== HỆ THỐNG ÂM THANH WEB AUDIO API ====================
-    const SoundEngine = (() => {
-      let ctx = null;
-      let bgmTimer = null;
-      let bgmStep = 0;
-      const PENTATONIC = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50, 880.00, 783.99, 659.25, 587.33];
-
-      function ensureCtx() {
-        if (!ctx) {
-          const AudioCtx = window.AudioContext || window.webkitAudioContext;
-          if (AudioCtx) ctx = new AudioCtx();
-        }
-        if (ctx && ctx.state === 'suspended') ctx.resume();
-        return ctx;
-      }
-
-      function tone(freq, dur, type = 'sine', vol = 0.14, delay = 0) {
-        if (!appState.settings.enableSfx && type !== 'bgm') return;
-        const c = ensureCtx();
-        if (!c) return;
-        const t = c.currentTime + delay;
-        const osc = c.createOscillator();
-        const gain = c.createGain();
-        osc.type = type === 'bgm' ? 'sine' : type;
-        osc.frequency.setValueAtTime(freq, t);
-        gain.gain.setValueAtTime(0.0001, t);
-        gain.gain.exponentialRampToValueAtTime(vol, t + 0.015);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        osc.connect(gain);
-        gain.connect(c.destination);
-        osc.start(t);
-        osc.stop(t + dur + 0.02);
-      }
-
-      return {
-        playClick() { tone(660, 0.08, 'sine', 0.12); },
-        playHoldTick(progress) {
-          const f = 440 + progress * 480;
-          tone(f, 0.06, 'triangle', 0.07);
-        },
-        playLock() {
-          tone(880, 0.12, 'sine', 0.16, 0);
-          tone(1318.5, 0.18, 'sine', 0.14, 0.06);
-        },
-        playTick() { tone(980, 0.05, 'square', 0.05); },
-        playCorrect() {
-          [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, 0.22, 'triangle', 0.16, i * 0.07));
-        },
-        playWrong() {
-          tone(330, 0.16, 'sawtooth', 0.08, 0);
-          tone(261.6, 0.24, 'sawtooth', 0.08, 0.12);
-        },
-        playFanfare() {
-          const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
-          const times = [0, 0.11, 0.22, 0.34, 0.52, 0.65];
-          notes.forEach((f, i) => tone(f, 0.28, 'triangle', 0.18, times[i]));
-        },
-        startBgm() {
-          if (bgmTimer) return;
-          ensureCtx();
-          bgmTimer = setInterval(() => {
-            if (!appState.settings.enableBgm) return;
-            const note = PENTATONIC[bgmStep % PENTATONIC.length];
-            bgmStep++;
-            tone(note, 0.36, 'bgm', 0.045, 0);
-          }, 420);
-        },
-        stopBgm() {
-          if (bgmTimer) { clearInterval(bgmTimer); bgmTimer = null; }
-        }
-      };
-    })();
-
-    function syncAudioButtons() {
-      const bgmOn = appState.settings.enableBgm;
-      const sfxOn = appState.settings.enableSfx;
-      document.querySelectorAll('.bgm-note').forEach(el => {
-        el.textContent = bgmOn ? '🎵' : '🔇';
-        el.classList.toggle('animate-note', bgmOn);
-      });
-      document.querySelectorAll('.sfx-icon').forEach(el => {
-        el.textContent = sfxOn ? '🔊' : '🔈';
-      });
-      const ruleSfxEl = document.getElementById('ruleSfx');
-      if (ruleSfxEl) ruleSfxEl.checked = sfxOn;
-    }
-
-    function toggleBgm() {
-      appState.settings.enableBgm = !appState.settings.enableBgm;
-      if (appState.settings.enableBgm) SoundEngine.startBgm();
-      else SoundEngine.stopBgm();
-      saveState();
-      syncAudioButtons();
-      SoundEngine.playClick();
-    }
-
-    function toggleSfx() {
-      appState.settings.enableSfx = !appState.settings.enableSfx;
-      saveState();
-      syncAudioButtons();
-      if (appState.settings.enableSfx) SoundEngine.playClick();
-    }
-
-    // ==================== TIỆN ÍCH GIAO DIỆN ====================
-    function showToast(msg) {
-      const box = document.getElementById('toastBox');
-      box.textContent = msg;
-      box.classList.remove('hidden');
-      clearTimeout(box._t);
-      box._t = setTimeout(() => box.classList.add('hidden'), 3000);
-    }
-
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    function openHowToModal() { SoundEngine.playClick(); openModal('howToModal'); }
-
-    function toggleFullscreen() {
-      SoundEngine.playClick();
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen?.().catch(() => showToast('Trình duyệt hoặc khung nhúng không cho phép toàn màn hình.'));
-      } else {
-        document.exitFullscreen?.();
-      }
-    }
-
-    function applyCustomBackground() {
-      const layer = document.getElementById('customBgLayer');
-      if (appState.settings.customBg) {
-        layer.style.backgroundImage = `url(${appState.settings.customBg})`;
-        layer.classList.remove('hidden');
-      } else {
-        layer.classList.add('hidden');
-      }
-    }
-
-    function showDialog({ title, message, showInputs = false, val1 = '', val2 = '', ph1 = '', ph2 = '', onConfirm }) {
-      document.getElementById('dialogTitle').textContent = title;
-      document.getElementById('dialogMessage').textContent = message;
-      const inpWrap = document.getElementById('dialogInputs');
-      const i1 = document.getElementById('dialogInput1');
-      const i2 = document.getElementById('dialogInput2');
-      if (showInputs) {
-        inpWrap.classList.remove('hidden');
-        i1.value = val1; i1.placeholder = ph1;
-        i2.value = val2; i2.placeholder = ph2;
-      } else {
-        inpWrap.classList.add('hidden');
-      }
-      const btn = document.getElementById('dialogConfirmBtn');
-      btn.onclick = () => {
-        closeModal('dialogModal');
-        onConfirm(i1.value.trim(), i2.value.trim());
-      };
-      openModal('dialogModal');
-    }
-
-    // ==================== RENDER TRANG CHỦ ====================
-    function renderHome() {
-      const selected = getSelectedQuiz();
-      const totalPts = selected.questions.reduce((s, q) => s + (q.points || 10), 0);
-      document.getElementById('homePlayBtnText').textContent = `CHƠI NGAY: ${selected.title}`;
-      document.getElementById('statHoldSec').textContent = `${appState.settings.holdDuration}s`;
-      document.getElementById('statQuestionCount').textContent = `${selected.questions.length} câu hỏi`;
-      document.getElementById('statTotalPoints').textContent = `${totalPts} điểm`;
-
-      const grid = document.getElementById('quizGrid');
-      grid.innerHTML = appState.quizzes.map(q => {
-        const isSel = q.id === appState.selectedQuizId;
-        const pts = q.questions.reduce((s, item) => s + (item.points || 10), 0);
-        return `
-          <div onclick="selectQuiz('${q.id}')" class="cursor-pointer p-4 transition-all ${isSel ? 'stitch-card-strong scale-[1.01]' : 'stitch-card hover:-translate-y-1'} flex flex-col justify-between gap-3">
-            <div>
-              <div class="flex items-center justify-between gap-2 mb-2">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-100 text-pink-700 border border-dashed border-pink-300">${escapeHtml(q.subject || 'Chủ đề')}</span>
-                ${isSel ? '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-pink-500 text-white">ĐANG CHỌN</span>' : ''}
+              <div class="q-form-actions">
+                <button type="submit" class="btn-3d btn-3d-green btn-sm">Lưu câu hỏi</button>
+                <button type="button" id="btn-q-cancel" class="btn-3d btn-3d-slate btn-sm">Hủy</button>
               </div>
-              <h4 class="font-display font-bold text-base sm:text-lg text-pink-800 mb-1">${escapeHtml(q.title)}</h4>
-              <p class="text-xs sm:text-sm text-pink-600 line-clamp-2">${escapeHtml(q.description || 'Bộ câu hỏi tương tác cử chỉ')}</p>
-            </div>
-            <div class="flex items-center justify-between pt-2 border-t border-dashed border-pink-200 text-xs font-bold text-pink-700">
-              <span>📝 ${q.questions.length} câu hỏi</span>
-              <span>★ ${pts} điểm</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      const footer = document.getElementById('homeFooterQuickGuide');
-      footer.innerHTML = ['A', 'B', 'C', 'D'].map(opt => {
-        const g = GESTURES[appState.settings.gestureMap[opt]];
-        return `
-          <div class="flex items-center gap-2">
-            <img src="${g.img}" class="w-8 h-8 object-contain" alt="${g.label}" />
-            <span><strong>${opt}:</strong> ${g.label}</span>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function selectQuiz(id) {
-      SoundEngine.playClick();
-      appState.selectedQuizId = id;
-      saveState();
-      renderHome();
-    }
-
-    function escapeHtml(str) {
-      return String(str || '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-    }
-
-    // ==================== MEDIAPIPE POSE & CAMERA ENGINE ====================
-    let poseInstance = null;
-    let poseLoadPromise = null;
-    let activeStream = null;
-    let rafId = null;
-    let isProcessingFrame = false;
-    let currentCamTarget = null; // 'game' | 'test'
-
-    function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = src;
-        s.crossOrigin = 'anonymous';
-        s.onload = resolve;
-        s.onerror = reject;
-        document.head.appendChild(s);
-      });
-    }
-
-    async function ensurePoseReady() {
-      if (poseInstance) return poseInstance;
-      if (poseLoadPromise) return poseLoadPromise;
-
-      poseLoadPromise = (async () => {
-        let cdnBase = 'https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/';
-        if (!window.Pose) {
-          try {
-            await loadScript(cdnBase + 'pose.js');
-          } catch (e) {
-            cdnBase = 'https://unpkg.com/@mediapipe/pose@0.5.1675469404/';
-            await loadScript(cdnBase + 'pose.js');
-          }
-        }
-        const pose = new window.Pose({
-          locateFile: (file) => `${cdnBase}${file}`
-        });
-        pose.setOptions({
-          modelComplexity: 1,
-          smoothLandmarks: true,
-          enableSegmentation: false,
-          minDetectionConfidence: 0.55,
-          minTrackingConfidence: 0.55
-        });
-        pose.onResults(handlePoseResults);
-        poseInstance = pose;
-        return pose;
-      })();
-
-      return poseLoadPromise;
-    }
-
-    async function startCameraFor(target) {
-      stopCamera();
-      currentCamTarget = target;
-      const videoEl = document.getElementById(target === 'game' ? 'gameVideo' : 'testVideo');
-      const canvasEl = document.getElementById(target === 'game' ? 'gameCanvas' : 'testCanvas');
-      const mirror = appState.settings.mirrorCamera;
-      videoEl.classList.toggle('mirror-mode', mirror);
-      canvasEl.classList.toggle('mirror-mode', mirror);
-
-      if (target === 'game') {
-        setCamStatus('Đang mở Camera...', 'amber');
-        document.getElementById('cameraFallbackOverlay').classList.add('hidden');
-      } else {
-        document.getElementById('testCamStatus').textContent = 'Đang mở Camera...';
-        document.getElementById('testCamFallback').classList.add('hidden');
-      }
-
-      try {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          throw new Error('Trình duyệt không hỗ trợ Camera');
-        }
-        try {
-          activeStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false });
-        } catch {
-          activeStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        }
-        videoEl.srcObject = activeStream;
-        await videoEl.play();
-
-        if (target === 'game') setCamStatus('Đang tải AI nhận diện cử chỉ...', 'amber');
-        else document.getElementById('testCamStatus').textContent = 'Đang tải AI nhận diện...';
-
-        await ensurePoseReady();
-
-        if (currentCamTarget !== target) return;
-        if (target === 'game') setCamStatus('Đang quan sát cử chỉ học sinh', 'emerald');
-        else document.getElementById('testCamStatus').textContent = 'AI đã sẵn sàng!';
-
-        const loop = async () => {
-          if (currentCamTarget !== target || !activeStream) return;
-          if (videoEl.readyState >= 2 && !isProcessingFrame && poseInstance) {
-            isProcessingFrame = true;
-            try {
-              if (canvasEl.width !== videoEl.videoWidth || canvasEl.height !== videoEl.videoHeight) {
-                canvasEl.width = videoEl.videoWidth || 640;
-                canvasEl.height = videoEl.videoHeight || 480;
-              }
-              await poseInstance.send({ image: videoEl });
-            } catch (err) {
-              // Bỏ qua lỗi khung hình đơn lẻ
-            } finally {
-              isProcessingFrame = false;
-            }
-          }
-          rafId = requestAnimationFrame(loop);
-        };
-        rafId = requestAnimationFrame(loop);
-      } catch (err) {
-        if (target === 'game') {
-          setCamStatus('Chưa kết nối Camera', 'rose');
-          document.getElementById('cameraFallbackOverlay').classList.remove('hidden');
-        } else {
-          document.getElementById('testCamStatus').textContent = 'Không truy cập được Camera';
-          document.getElementById('testCamFallback').classList.remove('hidden');
-        }
-      }
-    }
-
-    function stopCamera() {
-      currentCamTarget = null;
-      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-      isProcessingFrame = false;
-      if (activeStream) {
-        activeStream.getTracks().forEach(t => t.stop());
-        activeStream = null;
-      }
-    }
-
-    function setCamStatus(text, color) {
-      const dot = document.getElementById('camStatusDot');
-      document.getElementById('camStatusText').textContent = text;
-      const colorMap = { amber: 'bg-amber-400 animate-pulse', emerald: 'bg-emerald-400', rose: 'bg-rose-400' };
-      dot.className = `w-2.5 h-2.5 rounded-full ${colorMap[color] || 'bg-amber-400'}`;
-    }
-
-    // Thuật toán phân loại 4 cử chỉ chuẩn hóa theo độ rộng vai (shoulderWidth)
-    function classifyPose(lm) {
-      if (!lm || lm.length < 17) return null;
-      const ls = lm[11], rs = lm[12];
-      const le = lm[13], re = lm[14];
-      const lw = lm[15], rw = lm[16];
-      if (!ls || !rs || (ls.visibility < 0.35 && rs.visibility < 0.35)) return null;
-
-      const sw = Math.max(0.1, Math.hypot(ls.x - rs.x, ls.y - rs.y));
-
-      // Dùng cổ tay, dự phòng khuỷu tay nếu cổ tay mất dấu ngoài mép khung hình
-      const leftUp = (lw.visibility > 0.35 && lw.y < ls.y - 0.32 * sw && Math.abs(lw.x - ls.x) < 1.25 * sw)
-                  || (lw.visibility <= 0.35 && le.visibility > 0.4 && le.y < ls.y - 0.16 * sw);
-      const rightUp = (rw.visibility > 0.35 && rw.y < rs.y - 0.32 * sw && Math.abs(rw.x - rs.x) < 1.25 * sw)
-                   || (rw.visibility <= 0.35 && re.visibility > 0.4 && re.y < rs.y - 0.16 * sw);
-
-      if (leftUp && rightUp) return 'both_hands_up';
-      if (leftUp && !rightUp) return 'left_hand_up';
-      if (rightUp && !leftUp) return 'right_hand_up';
-
-      const leftSpread = ((lw.visibility > 0.35 && Math.abs(lw.x - ls.x) > 0.72 * sw && Math.abs(lw.y - ls.y) < 0.65 * sw)
-                       || (le.visibility > 0.4 && Math.abs(le.x - ls.x) > 0.48 * sw && Math.abs(le.y - ls.y) < 0.48 * sw));
-      const rightSpread = ((rw.visibility > 0.35 && Math.abs(rw.x - rs.x) > 0.72 * sw && Math.abs(rw.y - rs.y) < 0.65 * sw)
-                        || (re.visibility > 0.4 && Math.abs(re.x - rs.x) > 0.48 * sw && Math.abs(re.y - rs.y) < 0.48 * sw));
-
-      if (leftSpread && rightSpread) return 'arms_spread';
-      return null;
-    }
-
-    function drawPastelSkeleton(canvas, lm) {
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (!lm) return;
-
-      const pairs = [
-        [11, 12], [11, 13], [13, 15], [12, 14], [14, 16],
-        [11, 23], [12, 24], [23, 24]
-      ];
-      ctx.save();
-      ctx.lineCap = 'round';
-      ctx.lineWidth = 4.5;
-      ctx.strokeStyle = '#fbcfe8';
-      ctx.shadowColor = '#ec4899';
-      ctx.shadowBlur = 12;
-
-      pairs.forEach(([a, b]) => {
-        const p1 = lm[a], p2 = lm[b];
-        if (p1 && p2 && p1.visibility > 0.35 && p2.visibility > 0.35) {
-          ctx.beginPath();
-          ctx.moveTo(p1.x * canvas.width, p1.y * canvas.height);
-          ctx.lineTo(p2.x * canvas.width, p2.y * canvas.height);
-          ctx.stroke();
-        }
-      });
-
-      [0, 11, 12, 13, 14, 15, 16].forEach(idx => {
-        const p = lm[idx];
-        if (p && p.visibility > 0.35) {
-          ctx.beginPath();
-          ctx.arc(p.x * canvas.width, p.y * canvas.height, idx >= 15 ? 7.5 : 5.5, 0, Math.PI * 2);
-          ctx.fillStyle = idx >= 15 ? '#38bdf8' : '#f43f5e';
-          ctx.fill();
-          ctx.lineWidth = 2;
-          ctx.strokeStyle = '#ffffff';
-          ctx.stroke();
-        }
-      });
-      ctx.restore();
-    }
-
-    function handlePoseResults(results) {
-      const lm = results.poseLandmarks;
-      if (currentCamTarget === 'test') {
-        const canvas = document.getElementById('testCanvas');
-        drawPastelSkeleton(canvas, lm);
-        const gesture = classifyPose(lm);
-        updateTestGestureUI(gesture);
-        return;
-      }
-      if (currentCamTarget === 'game') {
-        const canvas = document.getElementById('gameCanvas');
-        drawPastelSkeleton(canvas, lm);
-        processGameGesture(classifyPose(lm));
-      }
-    }
-
-    // ==================== LOGIC MÀN HÌNH CHƠI GAME (NO STALE CLOSURE) ====================
-    const gameRuntime = {
-      quiz: null,
-      qIndex: 0,
-      score: 0,
-      correctCount: 0,
-      wrongCount: 0,
-      locked: false,
-      timeLeft: 20,
-      timerInterval: null,
-      holdGesture: null,
-      holdStart: 0,
-      lastSeen: 0,
-      lastTickSound: 0,
-      nextAction: 'next' // 'next' | 'retry' | 'summary'
-    };
-
-    function switchScreen(name) {
-      ['homeScreen', 'gameScreen', 'settingsScreen'].forEach(id => {
-        document.getElementById(id).classList.toggle('hidden', id !== name);
-      });
-    }
-
-    function startGame() {
-      SoundEngine.playClick();
-      const quiz = getSelectedQuiz();
-      if (!quiz || !quiz.questions.length) {
-        showToast('Bộ đề này chưa có câu hỏi nào! Hãy thêm câu hỏi trong Cài đặt.');
-        return;
-      }
-      gameRuntime.quiz = quiz;
-      gameRuntime.qIndex = 0;
-      gameRuntime.score = 0;
-      gameRuntime.correctCount = 0;
-      gameRuntime.wrongCount = 0;
-      gameRuntime.locked = false;
-
-      document.getElementById('gameQuizTitle').textContent = quiz.title;
-      document.getElementById('gameScoreText').textContent = '0';
-      switchScreen('gameScreen');
-      renderCurrentQuestion();
-      startCameraFor('game');
-    }
-
-    function retryGameCamera() {
-      SoundEngine.playClick();
-      startCameraFor('game');
-    }
-
-    function exitGameToHome() {
-      SoundEngine.playClick();
-      clearInterval(gameRuntime.timerInterval);
-      stopCamera();
-      switchScreen('homeScreen');
-      renderHome();
-    }
-
-    function renderCurrentQuestion() {
-      const q = gameRuntime.quiz.questions[gameRuntime.qIndex];
-      const total = gameRuntime.quiz.questions.length;
-      gameRuntime.locked = false;
-      resetHoldProgress();
-
-      document.getElementById('gameProgressText').textContent = `${gameRuntime.qIndex + 1} / ${total}`;
-      document.getElementById('questionBadge').textContent = `Câu ${gameRuntime.qIndex + 1}`;
-      document.getElementById('questionPointsBadge').textContent = `+${q.points || appState.settings.defaultPoints} điểm`;
-      document.getElementById('questionText').textContent = q.text;
-
-      const qImg = document.getElementById('questionImage');
-      if (q.image) { qImg.src = q.image; qImg.classList.remove('hidden'); }
-      else { qImg.classList.add('hidden'); }
-
-      ['A', 'B', 'C', 'D'].forEach(opt => {
-        const st = OPTION_STYLES[opt];
-        const g = GESTURES[appState.settings.gestureMap[opt]];
-        const optImg = q.optionImages && q.optionImages[opt] ? `<img src="${q.optionImages[opt]}" class="max-h-14 rounded-lg object-contain border border-pink-200 bg-white p-0.5" />` : '';
-        document.getElementById(`optionCard${opt}`).innerHTML = `
-          <button onclick="manualSelectOption('${opt}')" id="optBtn_${opt}" class="w-full h-full text-left p-3.5 rounded-3xl border-2 border-dashed ${st.border} ${st.bg} shadow-md hover:scale-[1.015] transition-all flex flex-col justify-between gap-2 relative overflow-hidden">
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-xl ${st.badge} text-white font-display font-bold flex items-center justify-center shadow-sm">${opt}</span>
-                <span class="text-xs font-extrabold ${st.text} opacity-80">${g.label}</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span id="optPct_${opt}" class="hidden text-xs font-extrabold text-pink-600">0%</span>
-                <img src="${g.img}" alt="${g.label}" class="w-11 h-11 object-contain" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between gap-2">
-              <div class="font-bold text-sm sm:text-base md:text-lg ${st.text} leading-snug">${escapeHtml(q.options[opt] || '')}</div>
-              ${optImg}
-            </div>
-            <div class="w-full h-2 bg-white/80 rounded-full overflow-hidden">
-              <div id="optBar_${opt}" class="h-full bg-gradient-to-r from-pink-400 to-rose-500 transition-all duration-75" style="width: 0%"></div>
-            </div>
-          </button>
-        `;
-      });
-
-      startQuestionTimer(q.time || appState.settings.defaultTime);
-    }
-
-    function startQuestionTimer(seconds) {
-      clearInterval(gameRuntime.timerInterval);
-      const maxSec = Math.max(5, seconds);
-      gameRuntime.timeLeft = maxSec;
-      updateTimerUI(maxSec);
-
-      gameRuntime.timerInterval = setInterval(() => {
-        if (gameRuntime.locked) return;
-        gameRuntime.timeLeft -= 1;
-        updateTimerUI(maxSec);
-        if (gameRuntime.timeLeft <= 4 && gameRuntime.timeLeft > 0) SoundEngine.playTick();
-        if (gameRuntime.timeLeft <= 0) {
-          clearInterval(gameRuntime.timerInterval);
-          handleTimeout();
-        }
-      }, 1000);
-    }
-
-    function updateTimerUI(maxSec) {
-      const left = Math.max(0, gameRuntime.timeLeft);
-      const pct = (left / maxSec) * 100;
-      document.getElementById('timerSecText').textContent = left;
-      const bar = document.getElementById('candyTimerBar');
-      bar.style.width = `${pct}%`;
-      if (left <= 4) {
-        bar.className = 'h-full rounded-full bg-gradient-to-r from-red-500 to-rose-600 animate-timer-danger';
-      } else {
-        bar.className = 'h-full rounded-full bg-gradient-to-r from-pink-400 via-rose-400 to-fuchsia-500 transition-all duration-300';
-      }
-    }
-
-    function resetHoldProgress() {
-      gameRuntime.holdGesture = null;
-      gameRuntime.holdStart = 0;
-      document.getElementById('holdProgressBar').style.width = '0%';
-      document.getElementById('holdPercentLabel').textContent = '0%';
-      document.getElementById('holdGestureLabel').textContent = 'Giữ nguyên cử chỉ để chọn đáp án';
-      ['A', 'B', 'C', 'D'].forEach(opt => {
-        const btn = document.getElementById(`optBtn_${opt}`);
-        const bar = document.getElementById(`optBar_${opt}`);
-        const pct = document.getElementById(`optPct_${opt}`);
-        if (btn) btn.classList.remove('ring-4', 'ring-pink-400', 'scale-[1.03]');
-        if (bar) bar.style.width = '0%';
-        if (pct) pct.classList.add('hidden');
-      });
-    }
-
-    function findOptionByGesture(gestureId) {
-      const map = appState.settings.gestureMap;
-      return ['A', 'B', 'C', 'D'].find(opt => map[opt] === gestureId) || null;
-    }
-
-    function processGameGesture(detected) {
-      if (gameRuntime.locked || currentCamTarget !== 'game') return;
-      const now = performance.now();
-      const holdMs = Math.max(300, (appState.settings.holdDuration || 0.8) * 1000);
-
-      if (detected) {
-        setCamStatus(`Nhận diện: ${GESTURES[detected].label}`, 'emerald');
-      } else {
-        setCamStatus('Đang quan sát cử chỉ học sinh', 'emerald');
-      }
-
-      if (detected && detected === gameRuntime.holdGesture) {
-        gameRuntime.lastSeen = now;
-      } else if (gameRuntime.holdGesture && (now - gameRuntime.lastSeen <= 180)) {
-        // Grace period 180ms chống nhiễu khung hình
-      } else if (detected) {
-        resetHoldProgress();
-        gameRuntime.holdGesture = detected;
-        gameRuntime.holdStart = now;
-        gameRuntime.lastSeen = now;
-      } else {
-        resetHoldProgress();
-        return;
-      }
-
-      const activeG = gameRuntime.holdGesture;
-      const targetOpt = findOptionByGesture(activeG);
-      if (!targetOpt) return;
-
-      const ratio = Math.min(1, (now - gameRuntime.holdStart) / holdMs);
-      const pct = Math.round(ratio * 100);
-
-      document.getElementById('holdProgressBar').style.width = `${pct}%`;
-      document.getElementById('holdPercentLabel').textContent = `${pct}%`;
-      document.getElementById('holdGestureLabel').textContent = `Đang giữ: ${targetOpt} (${GESTURES[activeG].label})`;
-
-      const btn = document.getElementById(`optBtn_${targetOpt}`);
-      const bar = document.getElementById(`optBar_${targetOpt}`);
-      const pctEl = document.getElementById(`optPct_${targetOpt}`);
-      if (btn) btn.classList.add('ring-4', 'ring-pink-400', 'scale-[1.03]');
-      if (bar) bar.style.width = `${pct}%`;
-      if (pctEl) { pctEl.textContent = `${pct}%`; pctEl.classList.remove('hidden'); }
-
-      if (now - gameRuntime.lastTickSound > 150) {
-        gameRuntime.lastTickSound = now;
-        SoundEngine.playHoldTick(ratio);
-      }
-
-      if (ratio >= 1) {
-        SoundEngine.playLock();
-        submitAnswer(targetOpt);
-      }
-    }
-
-    function manualSelectOption(opt) {
-      if (gameRuntime.locked) return;
-      SoundEngine.playLock();
-      submitAnswer(opt);
-    }
-
-    function submitAnswer(opt) {
-      if (gameRuntime.locked) return;
-      gameRuntime.locked = true;
-      clearInterval(gameRuntime.timerInterval);
-      resetHoldProgress();
-
-      const q = gameRuntime.quiz.questions[gameRuntime.qIndex];
-      const isCorrect = opt === q.correct;
-      const pts = q.points || appState.settings.defaultPoints;
-
-      if (isCorrect) {
-        gameRuntime.score += pts;
-        gameRuntime.correctCount += 1;
-        document.getElementById('gameScoreText').textContent = gameRuntime.score;
-        SoundEngine.playCorrect();
-        fireCorrectConfetti();
-        showFeedbackModal(true, `Bạn đã chọn đáp án ${opt} (+${pts} điểm)`, q.explain);
-      } else {
-        SoundEngine.playWrong();
-        if (appState.settings.wrongMode === 'retry') {
-          showFeedbackModal(false, `Đáp án ${opt} chưa chính xác. Hãy thử lại nhé!`, '', 'retry');
-        } else {
-          gameRuntime.wrongCount += 1;
-          showFeedbackModal(false, `Đáp án đúng là ${q.correct}: ${q.options[q.correct]}`, q.explain, 'next');
-        }
-      }
-    }
-
-    function handleTimeout() {
-      if (gameRuntime.locked) return;
-      gameRuntime.locked = true;
-      resetHoldProgress();
-      SoundEngine.playWrong();
-      const q = gameRuntime.quiz.questions[gameRuntime.qIndex];
-      gameRuntime.wrongCount += 1;
-      showFeedbackModal(false, `Hết thời gian! Đáp án đúng là ${q.correct}: ${q.options[q.correct]}`, q.explain, 'next');
-    }
-
-    function showFeedbackModal(isCorrect, subtitle, explain, mode = 'next') {
-      const titleEl = document.getElementById('feedbackTitle');
-      const chibiEl = document.getElementById('feedbackChibi');
-      const expEl = document.getElementById('feedbackExplain');
-      const btnEl = document.getElementById('feedbackNextBtn');
-
-      if (isCorrect) {
-        titleEl.textContent = 'CHÍNH XÁC! TUYỆT VỜI!';
-        titleEl.className = 'font-display text-2xl font-bold text-pink-600';
-        chibiEl.src = './assets/celebration.png';
-      } else {
-        titleEl.textContent = mode === 'retry' ? 'CỐ LÊN BẠN NHÉ!' : 'TIẾC QUÁ! CHƯA ĐÚNG RỒI';
-        titleEl.className = 'font-display text-xl sm:text-2xl font-bold text-rose-600';
-        chibiEl.src = './assets/both_hands_up.png';
-      }
-
-      document.getElementById('feedbackSubtitle').textContent = subtitle;
-      if (explain) {
-        expEl.textContent = `💡 Giải thích: ${explain}`;
-        expEl.classList.remove('hidden');
-      } else {
-        expEl.classList.add('hidden');
-      }
-
-      const isLast = gameRuntime.qIndex >= gameRuntime.quiz.questions.length - 1;
-      if (mode === 'retry') {
-        gameRuntime.nextAction = 'retry';
-        btnEl.textContent = '🔄 Thử lại ngay';
-      } else if (isLast) {
-        gameRuntime.nextAction = 'summary';
-        btnEl.textContent = '🏆 Xem tổng kết';
-      } else {
-        gameRuntime.nextAction = 'next';
-        btnEl.textContent = 'Câu tiếp theo ➜';
-      }
-      openModal('feedbackModal');
-    }
-
-    function proceedAfterFeedback() {
-      SoundEngine.playClick();
-      closeModal('feedbackModal');
-      if (gameRuntime.nextAction === 'retry') {
-        const q = gameRuntime.quiz.questions[gameRuntime.qIndex];
-        gameRuntime.locked = false;
-        startQuestionTimer(q.time || appState.settings.defaultTime);
-      } else if (gameRuntime.nextAction === 'next') {
-        gameRuntime.qIndex += 1;
-        renderCurrentQuestion();
-      } else {
-        showSummaryModal();
-      }
-    }
-
-    function showSummaryModal() {
-      document.getElementById('summaryScore').textContent = gameRuntime.score;
-      document.getElementById('summaryCorrect').textContent = gameRuntime.correctCount;
-      document.getElementById('summaryWrong').textContent = gameRuntime.wrongCount;
-      openModal('summaryModal');
-      SoundEngine.playFanfare();
-      fireSummaryConfetti();
-    }
-
-    function replayGame() {
-      closeModal('summaryModal');
-      startGame();
-    }
-    function summaryToHome() {
-      closeModal('summaryModal');
-      exitGameToHome();
-    }
-    function summaryToSettings() {
-      closeModal('summaryModal');
-      stopCamera();
-      openSettingsScreen();
-    }
-
-    // Pháo hoa Confetti pastel
-    function fireCorrectConfetti() {
-      if (!appState.settings.enableConfetti || typeof confetti !== 'function') return;
-      const colors = ['#f472b6', '#fb7185', '#c084fc', '#38bdf8', '#fde047'];
-      confetti({ particleCount: 55, angle: 60, spread: 55, origin: { x: 0, y: 0.85 }, colors });
-      confetti({ particleCount: 55, angle: 120, spread: 55, origin: { x: 1, y: 0.85 }, colors });
-      confetti({ particleCount: 70, spread: 90, origin: { x: 0.5, y: 0.55 }, colors });
-    }
-
-    function fireSummaryConfetti() {
-      if (!appState.settings.enableConfetti || typeof confetti !== 'function') return;
-      const colors = ['#f472b6', '#fb7185', '#c084fc', '#34d399', '#fde047'];
-      const end = Date.now() + 2500;
-      confetti({ particleCount: 100, spread: 110, origin: { y: 0.5 }, colors });
-      const iv = setInterval(() => {
-        if (Date.now() > end) return clearInterval(iv);
-        confetti({ particleCount: 28, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, colors });
-        confetti({ particleCount: 28, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, colors });
-      }, 240);
-    }
-
-    // Phím tắt 1/2/3/4 hoặc A/B/C/D khi chơi game
-    window.addEventListener('keydown', (e) => {
-      if (document.getElementById('gameScreen').classList.contains('hidden')) return;
-      if (!document.getElementById('feedbackModal').classList.contains('hidden')) return;
-      const key = e.key.toUpperCase();
-      const map = { '1': 'A', '2': 'B', '3': 'C', '4': 'D', 'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D' };
-      if (map[key]) manualSelectOption(map[key]);
-    });
-
-    // ==================== MÀN HÌNH CÀI ĐẶT GIÁO VIÊN (3 TAB) ====================
-    let editingQuizId = null;
-    let editingQuestionIndex = -1;
-    let formImages = { q: '', A: '', B: '', C: '', D: '' };
-
-    function openSettingsScreen() {
-      SoundEngine.playClick();
-      stopCamera();
-      editingQuizId = appState.selectedQuizId;
-      switchScreen('settingsScreen');
-      switchSettingsTab('quizzes');
-    }
-
-    function closeSettingsScreen() {
-      SoundEngine.playClick();
-      stopCamera();
-      switchScreen('homeScreen');
-      renderHome();
-    }
-
-    function switchSettingsTab(tab) {
-      SoundEngine.playClick();
-      ['quizzes', 'rules', 'camera'].forEach(t => {
-        const panel = document.getElementById(`settingsTab-${t}`);
-        const btn = document.getElementById(`tabBtn-${t}`);
-        const active = t === tab;
-        panel.classList.toggle('hidden', !active);
-        btn.className = active
-          ? 'px-4 py-2 rounded-2xl font-bold text-xs sm:text-sm border-2 border-dashed border-pink-500 bg-pink-500 text-white shadow'
-          : 'px-4 py-2 rounded-2xl font-bold text-xs sm:text-sm border-2 border-dashed border-pink-300 bg-pink-50 text-pink-700 hover:bg-pink-100';
-      });
-      if (tab === 'quizzes') renderSettingsQuizzes();
-      if (tab === 'rules') renderSettingsRules();
-      if (tab === 'camera') { renderTestGestureCards(); startCameraFor('test'); }
-      else if (currentCamTarget === 'test') stopCamera();
-    }
-
-    function getEditingQuiz() {
-      return appState.quizzes.find(q => q.id === editingQuizId) || appState.quizzes[0];
-    }
-
-    function renderSettingsQuizzes() {
-      const pills = document.getElementById('settingsQuizPills');
-      pills.innerHTML = appState.quizzes.map(q => `
-        <button onclick="selectEditingQuiz('${q.id}')" class="px-3.5 py-2 rounded-2xl text-xs sm:text-sm font-bold border-2 border-dashed transition ${q.id === editingQuizId ? 'bg-pink-500 text-white border-pink-600 shadow' : 'bg-pink-50 text-pink-700 border-pink-300 hover:bg-pink-100'}">
-          ${escapeHtml(q.title)} (${q.questions.length})
-        </button>
-      `).join('');
-
-      const quiz = getEditingQuiz();
-      editingQuizId = quiz.id;
-      document.getElementById('settingsQuestionCount').textContent = quiz.questions.length;
-      document.getElementById('settingsActiveQuizLabel').textContent = `${quiz.subject} • ${quiz.title}`;
-
-      const list = document.getElementById('settingsQuestionList');
-      if (!quiz.questions.length) {
-        list.innerHTML = '<div class="p-8 text-center text-pink-500 font-semibold border-2 border-dashed border-pink-200 rounded-2xl">Chưa có câu hỏi nào. Hãy thêm câu hỏi ở cột bên trái!</div>';
-        return;
-      }
-
-      list.innerHTML = quiz.questions.map((q, idx) => `
-        <div class="p-3.5 rounded-2xl bg-pink-50/70 border border-dashed border-pink-300 flex flex-col gap-2">
-          <div class="flex items-start justify-between gap-2">
-            <div class="font-bold text-sm text-pink-900">
-              <span class="text-pink-600">Câu ${idx + 1}:</span> ${escapeHtml(q.text)}
-            </div>
-            <div class="flex items-center gap-1.5 shrink-0">
-              <button onclick="editQuestion(${idx})" class="px-2.5 py-1 rounded-lg bg-white text-pink-700 border border-pink-300 text-xs font-bold hover:bg-pink-100">✏️ Sửa</button>
-              <button onclick="deleteQuestion(${idx})" class="px-2.5 py-1 rounded-lg bg-rose-100 text-rose-700 text-xs font-bold hover:bg-rose-200">🗑️</button>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs">
-            ${['A', 'B', 'C', 'D'].map(o => `
-              <div class="px-2 py-1 rounded-lg ${q.correct === o ? 'bg-emerald-100 text-emerald-800 font-extrabold border border-emerald-300' : 'bg-white text-pink-800 border border-pink-100'}">
-                <strong>${o}.</strong> ${escapeHtml(q.options[o])}
-              </div>
-            `).join('')}
-          </div>
-          <div class="text-[11px] text-pink-600 font-semibold flex gap-3">
-            <span>★ ${q.points || 10} điểm</span>
-            <span>⏱️ ${q.time || 20}s</span>
-            ${q.explain ? `<span>💡 ${escapeHtml(q.explain)}</span>` : ''}
+            </form>
           </div>
         </div>
-      `).join('');
-    }
+      </section>
+    </div>
+  </div>
 
-    function selectEditingQuiz(id) {
-      editingQuizId = id;
-      appState.selectedQuizId = id;
-      resetQuestionForm();
-      saveState();
-      renderSettingsQuizzes();
-    }
-
-    function createNewQuiz() {
-      showDialog({
-        title: '➕ Tạo bộ đề mới',
-        message: 'Nhập tên bộ đề và chủ đề:',
-        showInputs: true,
-        ph1: 'Tên bộ đề (VD: Lịch sử lớp 6)',
-        ph2: 'Chủ đề (VD: Lịch sử)',
-        onConfirm: (title, subject) => {
-          if (!title) return showToast('Vui lòng nhập tên bộ đề.');
-          const newQ = { id: 'quiz_' + Date.now(), title, subject: subject || 'Tổng hợp', description: 'Bộ câu hỏi do giáo viên biên soạn.', questions: [] };
-          appState.quizzes.push(newQ);
-          editingQuizId = newQ.id;
-          appState.selectedQuizId = newQ.id;
-          saveState();
-          renderSettingsQuizzes();
-          showToast('Đã tạo bộ đề mới!');
-        }
-      });
-    }
-
-    function promptRenameQuiz() {
-      const q = getEditingQuiz();
-      showDialog({
-        title: '✏️ Đổi tên bộ đề',
-        message: 'Cập nhật tên và chủ đề của bộ đề:',
-        showInputs: true,
-        val1: q.title,
-        val2: q.subject,
-        onConfirm: (title, subject) => {
-          if (!title) return;
-          q.title = title;
-          if (subject) q.subject = subject;
-          saveState();
-          renderSettingsQuizzes();
-          showToast('Đã cập nhật tên bộ đề!');
-        }
-      });
-    }
-
-    function duplicateCurrentQuiz() {
-      const q = getEditingQuiz();
-      const copy = JSON.parse(JSON.stringify(q));
-      copy.id = 'quiz_' + Date.now();
-      copy.title = q.title + ' (Bản sao)';
-      appState.quizzes.push(copy);
-      editingQuizId = copy.id;
-      appState.selectedQuizId = copy.id;
-      saveState();
-      renderSettingsQuizzes();
-      showToast('Đã nhân bản bộ đề!');
-    }
-
-    function confirmDeleteCurrentQuiz() {
-      if (appState.quizzes.length <= 1) return showToast('Cần giữ lại ít nhất 1 bộ đề.');
-      const q = getEditingQuiz();
-      showDialog({
-        title: '🗑️ Xóa bộ đề',
-        message: `Bạn có chắc muốn xóa bộ đề "${q.title}"?`,
-        onConfirm: () => {
-          appState.quizzes = appState.quizzes.filter(item => item.id !== q.id);
-          editingQuizId = appState.quizzes[0].id;
-          appState.selectedQuizId = editingQuizId;
-          saveState();
-          renderSettingsQuizzes();
-          showToast('Đã xóa bộ đề.');
-        }
-      });
-    }
-
-    function confirmRestoreSamples() {
-      showDialog({
-        title: '♻️ Khôi phục bộ đề mẫu',
-        message: 'Khôi phục lại 3 bộ đề mẫu gốc (Toán học, Khoa học, Đố vui đời sống)?',
-        onConfirm: () => {
-          appState.quizzes = getDefaultQuizzes();
-          editingQuizId = appState.quizzes[0].id;
-          appState.selectedQuizId = editingQuizId;
-          saveState();
-          renderSettingsQuizzes();
-          showToast('Đã khôi phục bộ đề mẫu gốc!');
-        }
-      });
-    }
-
-    function handleImageUpload(event, target) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const maxDim = 640;
-          const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
-          canvas.width = img.width * scale;
-          canvas.height = img.height * scale;
-          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
-          formImages[target] = dataUrl;
-          const prev = document.getElementById(target === 'q' ? 'qImgPreview' : `preview${target}`);
-          prev.src = dataUrl;
-          prev.classList.remove('hidden');
-          if (target === 'q') document.getElementById('clearQImgBtn').classList.remove('hidden');
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function clearFormImage(target) {
-      formImages[target] = '';
-      const prev = document.getElementById(target === 'q' ? 'qImgPreview' : `preview${target}`);
-      prev.classList.add('hidden');
-      if (target === 'q') document.getElementById('clearQImgBtn').classList.add('hidden');
-    }
-
-    function resetQuestionForm() {
-      editingQuestionIndex = -1;
-      document.getElementById('qFormTitle').textContent = '➕ Thêm câu hỏi mới';
-      document.getElementById('qCancelEditBtn').classList.add('hidden');
-      document.getElementById('qInputText').value = '';
-      ['A', 'B', 'C', 'D'].forEach(o => {
-        document.getElementById(`qInput${o}`).value = '';
-        clearFormImage(o);
-      });
-      clearFormImage('q');
-      document.getElementById('qInputCorrect').value = 'A';
-      document.getElementById('qInputPoints').value = appState.settings.defaultPoints;
-      document.getElementById('qInputTime').value = appState.settings.defaultTime;
-      document.getElementById('qInputExplain').value = '';
-    }
-
-    function editQuestion(idx) {
-      const q = getEditingQuiz().questions[idx];
-      editingQuestionIndex = idx;
-      document.getElementById('qFormTitle').textContent = `✏️ Đang sửa Câu ${idx + 1}`;
-      document.getElementById('qCancelEditBtn').classList.remove('hidden');
-      document.getElementById('qInputText').value = q.text;
-      ['A', 'B', 'C', 'D'].forEach(o => {
-        document.getElementById(`qInput${o}`).value = q.options[o] || '';
-        const imgData = q.optionImages && q.optionImages[o] ? q.optionImages[o] : '';
-        formImages[o] = imgData;
-        const prev = document.getElementById(`preview${o}`);
-        if (imgData) { prev.src = imgData; prev.classList.remove('hidden'); }
-        else prev.classList.add('hidden');
-      });
-      formImages.q = q.image || '';
-      const qPrev = document.getElementById('qImgPreview');
-      if (formImages.q) {
-        qPrev.src = formImages.q;
-        qPrev.classList.remove('hidden');
-        document.getElementById('clearQImgBtn').classList.remove('hidden');
-      } else clearFormImage('q');
-
-      document.getElementById('qInputCorrect').value = q.correct;
-      document.getElementById('qInputPoints').value = q.points || 10;
-      document.getElementById('qInputTime').value = q.time || 20;
-      document.getElementById('qInputExplain').value = q.explain || '';
-    }
-
-    function deleteQuestion(idx) {
-      const quiz = getEditingQuiz();
-      quiz.questions.splice(idx, 1);
-      saveState();
-      renderSettingsQuizzes();
-      showToast('Đã xóa câu hỏi.');
-    }
-
-    function saveQuestionFromForm() {
-      const text = document.getElementById('qInputText').value.trim();
-      if (!text) return showToast('Vui lòng nhập nội dung câu hỏi.');
-      const options = {
-        A: document.getElementById('qInputA').value.trim() || 'Đáp án A',
-        B: document.getElementById('qInputB').value.trim() || 'Đáp án B',
-        C: document.getElementById('qInputC').value.trim() || 'Đáp án C',
-        D: document.getElementById('qInputD').value.trim() || 'Đáp án D',
-      };
-      const newQ = {
-        id: 'q_' + Date.now(),
-        text,
-        options,
-        image: formImages.q || '',
-        optionImages: { A: formImages.A, B: formImages.B, C: formImages.C, D: formImages.D },
-        correct: document.getElementById('qInputCorrect').value,
-        points: parseInt(document.getElementById('qInputPoints').value) || 10,
-        time: parseInt(document.getElementById('qInputTime').value) || 20,
-        explain: document.getElementById('qInputExplain').value.trim()
-      };
-      const quiz = getEditingQuiz();
-      if (editingQuestionIndex >= 0) quiz.questions[editingQuestionIndex] = newQ;
-      else quiz.questions.push(newQ);
-
-      saveState();
-      resetQuestionForm();
-      renderSettingsQuizzes();
-      showToast('Đã lưu câu hỏi thành công!');
-    }
-
-    // Nhập hàng loạt & .txt
-    function handleTxtImport(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        document.getElementById('bulkPasteBox').value = e.target.result;
-        parseBulkQuestions();
-      };
-      reader.readAsText(file, 'UTF-8');
-    }
-
-    function parseBulkQuestions() {
-      const raw = document.getElementById('bulkPasteBox').value.trim();
-      if (!raw) return showToast('Vui lòng dán nội dung câu hỏi hoặc chọn file .txt.');
-
-      const blocks = raw.split(/(?=^Câu\s+\d+\s*[:.)])/im).map(b => b.trim()).filter(Boolean);
-      const parsed = [];
-
-      blocks.forEach(block => {
-        const lines = block.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-        if (lines.length < 5) return;
-        const qText = lines[0].replace(/^Câu\s+\d+\s*[:.)]\s*/i, '').trim();
-        const opts = { A: '', B: '', C: '', D: '' };
-        let correct = 'A';
-        let explain = '';
-
-        lines.slice(1).forEach(line => {
-          const mOpt = line.match(/^([ABCD])\s*[:.)]\s*(.+)$/i);
-          if (mOpt) opts[mOpt[1].toUpperCase()] = mOpt[2].trim();
-          const mAns = line.match(/^Đáp án\s*[:.]\s*([ABCD])/i);
-          if (mAns) correct = mAns[1].toUpperCase();
-          const mExp = line.match(/^Giải thích\s*[:.]\s*(.+)$/i);
-          if (mExp) explain = mExp[1].trim();
-        });
-
-        if (qText && (opts.A || opts.B)) {
-          parsed.push({
-            id: 'qb_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
-            text: qText,
-            options: opts,
-            correct,
-            points: appState.settings.defaultPoints,
-            time: appState.settings.defaultTime,
-            explain
-          });
-        }
-      });
-
-      if (!parsed.length) return showToast('Không phân tích được câu hỏi nào. Hãy kiểm tra lại định dạng.');
-      getEditingQuiz().questions.push(...parsed);
-      document.getElementById('bulkPasteBox').value = '';
-      saveState();
-      renderSettingsQuizzes();
-      showToast(`Đã thêm thành công ${parsed.length} câu hỏi!`);
-    }
-
-    // Tab 2: Luật chơi
-    function renderSettingsRules() {
-      const s = appState.settings;
-      document.getElementById('ruleHoldDuration').value = s.holdDuration;
-      document.getElementById('ruleDefaultTime').value = s.defaultTime;
-      document.getElementById('ruleDefaultPoints').value = s.defaultPoints;
-      document.getElementById('ruleWrongMode').value = s.wrongMode;
-      document.getElementById('ruleConfetti').checked = s.enableConfetti;
-      document.getElementById('ruleSfx').checked = s.enableSfx;
-      document.getElementById('ruleMirror').checked = s.mirrorCamera;
-
-      const mapGrid = document.getElementById('gestureMappingGrid');
-      mapGrid.innerHTML = ['A', 'B', 'C', 'D'].map(opt => {
-        const cur = s.gestureMap[opt];
-        return `
-          <div class="p-3 rounded-2xl bg-pink-50/70 border border-dashed border-pink-300 space-y-2">
-            <div class="font-display font-bold text-sm text-pink-700">Đáp án ${opt}</div>
-            <select onchange="updateGestureMapping('${opt}', this.value)" class="w-full rounded-xl border border-pink-300 p-2 text-xs font-bold bg-white">
-              ${Object.values(GESTURES).map(g => `<option value="${g.id}" ${g.id === cur ? 'selected' : ''}>${g.label}</option>`).join('')}
-            </select>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function updateRuleSetting(key, val) {
-      appState.settings[key] = val;
-      saveState();
-      syncAudioButtons();
-      applyCustomBackground();
-      showToast('Đã lưu cài đặt!');
-    }
-
-    function updateGestureMapping(opt, gestureId) {
-      appState.settings.gestureMap[opt] = gestureId;
-      saveState();
-      showToast(`Đã cập nhật cử chỉ cho đáp án ${opt}!`);
-    }
-
-    function handleCustomBgUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        appState.settings.customBg = e.target.result;
-        saveState();
-        applyCustomBackground();
-        showToast('Đã áp dụng ảnh nền tùy chỉnh!');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function clearCustomBg() {
-      appState.settings.customBg = '';
-      saveState();
-      applyCustomBackground();
-      showToast('Đã xóa ảnh nền tùy chỉnh.');
-    }
-
-    // Tab 3: Kiểm tra cử chỉ
-    function renderTestGestureCards() {
-      const container = document.getElementById('testGestureCards');
-      container.innerHTML = Object.values(GESTURES).map(g => `
-        <div id="testCard_${g.id}" class="p-3 rounded-2xl bg-pink-50/80 border-2 border-dashed border-pink-300 flex flex-col items-center text-center gap-1.5 transition-all">
-          <img src="${g.img}" class="w-16 h-16 object-contain" alt="${g.label}" />
-          <div class="font-bold text-xs sm:text-sm text-pink-800">${g.label}</div>
-          <span class="test-badge px-2 py-0.5 rounded-full text-[11px] font-bold bg-white text-pink-500">Chờ cử chỉ</span>
-        </div>
-      `).join('');
-    }
-
-    function updateTestGestureUI(activeGesture) {
-      const stEl = document.getElementById('testCamStatus');
-      if (stEl) stEl.textContent = activeGesture ? `Nhận diện: ${GESTURES[activeGesture].label}` : 'AI đã sẵn sàng – Hãy thử tạo cử chỉ';
-      Object.values(GESTURES).forEach(g => {
-        const card = document.getElementById(`testCard_${g.id}`);
-        if (!card) return;
-        const badge = card.querySelector('.test-badge');
-        const hit = g.id === activeGesture;
-        card.className = hit
-          ? 'p-3 rounded-2xl bg-emerald-50 border-2 border-dashed border-emerald-500 ring-4 ring-emerald-200 scale-[1.03] flex flex-col items-center text-center gap-1.5 transition-all'
-          : 'p-3 rounded-2xl bg-pink-50/80 border-2 border-dashed border-pink-300 flex flex-col items-center text-center gap-1.5 transition-all';
-        badge.textContent = hit ? '✅ Đang nhận diện' : 'Chờ cử chỉ';
-        badge.className = hit
-          ? 'test-badge px-2 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-500 text-white'
-          : 'test-badge px-2 py-0.5 rounded-full text-[11px] font-bold bg-white text-pink-500';
-      });
-    }
-
-    // ==================== KHỞI TẠO ỨNG DỤNG ====================
-    window.addEventListener('DOMContentLoaded', () => {
-      loadState();
-      applyCustomBackground();
-      syncAudioButtons();
-      renderHome();
-      if (appState.settings.enableBgm) {
-        const unlock = () => { SoundEngine.startBgm(); window.removeEventListener('pointerdown', unlock); };
-        window.addEventListener('pointerdown', unlock);
-      }
-    });
-
-    window.addEventListener('beforeunload', () => stopCamera());
-  </script>
+  <!-- Scripts mô-đun hóa rõ ràng -->
+  <script src="./js/config.js"></script>
+  <script src="./js/audioManager.js"></script>
+  <script src="./js/assetManager.js"></script>
+  <script src="./js/skeletalEngine.js"></script>
+  <script src="./js/questionManager.js"></script>
+  <script src="./js/uiManager.js"></script>
+  <script src="./js/gameEngine.js"></script>
+  <script src="./js/main.js"></script>
 </body>
 </html>
